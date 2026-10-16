@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ecuaciones diferenciales · Ley de enfriamiento de Newton · laboratoriobest-IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --lab-terra:#b57d4c; --lab-blue:#415a8e; --lab-dark:#20201c; --lab-cream:#faf8f1; --lab-gray:#6579a1;
+  --navy:#0f2244;
+  --paper:#FBF8F1; --ink:#20201c; --muted:#5f5b53;
+  --blue:#2B5A93; --amber:#C77A40; --green:#45785A; --rust:#BC5235; --violet:#6E4EAA;
+  --blue-bg:#eef3f9; --amber-bg:#fbf3e8; --green-bg:#edf4ef; --rust-bg:#faeeea; --violet-bg:#f2eef8;
+  --line:#e2ddd2;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'Hanken Grotesk',sans-serif;font-size:15px;line-height:1.6;color:var(--ink);background-color:var(--paper);background-image:linear-gradient(rgba(43,90,147,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(43,90,147,.07) 1px,transparent 1px);background-size:28px 28px}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:400;line-height:1.2;margin:0 0 .5em}
+h2{font-size:2rem;color:var(--navy)}
+h3{font-size:1.25rem;color:var(--navy);margin-top:1.4em}
+p{margin:.6em 0}
+.katex{font-size:1.08em}
+.katex-display{margin:.7em 0 !important;overflow-x:auto;overflow-y:hidden !important;padding:2px 0;position:relative}
+.katex-display>.katex{white-space:normal}
+/* chrome */
+.topbar{background:linear-gradient(135deg,var(--navy) 0%,#1a3a6e 100%);color:#e0f2fe;padding:14px 0;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.topbar-inner{max-width:1080px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-inspt{font-size:12px;color:#7dd3fc;letter-spacing:.1em;font-weight:700}
+.brand-title{font-family:'Fraunces',serif;font-size:18px;color:#fff;font-weight:700}
+.brand-sub{font-size:12px;color:#bfdbfe}
+.lab-logo{background:var(--lab-cream);padding:8px 18px 7px;border-radius:12px;text-align:left;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.lab-name{display:flex;align-items:center;font-family:'Fraunces',Georgia,serif;font-size:16px;font-weight:700;letter-spacing:-0.01em;line-height:1.2}
+.lab-name .bullet{width:8px;height:8px;border-radius:50%;background:var(--lab-terra);flex-shrink:0;margin-right:7px}
+.lab-name .lab{color:var(--lab-dark)} .lab-name .best{color:var(--lab-terra)} .lab-name .ia{color:var(--lab-blue)}
+.lab-sub{color:var(--lab-gray);font-size:11px;font-weight:500;margin-top:1px;padding-left:15px;font-family:'Hanken Grotesk',sans-serif}
+.ej-lab{font-family:'Fraunces',Georgia,serif;font-size:12.5px;font-weight:700;display:flex;align-items:center}
+.ej-lab .bullet{width:6px;height:6px;border-radius:50%;background:var(--lab-terra);margin-right:5px}
+.ej-lab .lab{color:var(--lab-dark);opacity:.75} .ej-lab .best{color:var(--lab-terra)} .ej-lab .ia{color:var(--lab-blue)}
+.site-footer{background:var(--navy);color:#cbd5e1;padding:30px 0 24px;margin-top:40px}
+.footer-inner{max-width:1080px;margin:0 auto;padding:0 20px;text-align:center}
+.footer-quote{font-family:'Fraunces',serif;font-style:italic;font-size:1.1rem;color:#e0f2fe;margin-bottom:16px}
+.footer-lab{display:inline-block;background:var(--lab-cream);padding:10px 22px 9px;border-radius:12px;text-align:left;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.footer-lab .lab-name{font-size:17px} .footer-lab .lab-sub{font-size:12px}
+/* matemática de respaldo */
+.mfall{font-family:'STIX Two Text','Times New Roman',serif;font-size:1.06em;white-space:nowrap}
+.mfall.disp{display:block;text-align:center;margin:.7em 0;overflow-x:auto;overflow-y:hidden !important;white-space:normal}
+.mfall .v{font-style:italic}
+.mfall .frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .15em;line-height:1.15}
+.mfall .frac>span{padding:0 .2em}
+.mfall .frac>span:first-child{border-bottom:1px solid currentColor}
+.mfall .big{font-size:1.5em;line-height:1;vertical-align:middle;margin:0 .1em}
+.mfall sup,.mfall sub{font-size:.7em;line-height:0}
+#testPanel{position:fixed;left:10px;bottom:10px;z-index:99;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font:12px 'Fira Code',monospace;max-height:50vh;max-width:420px;overflow:auto;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+#testPanel .ok{color:var(--green)} #testPanel .fail{color:var(--rust);font-weight:700}
+/* stepper */
+.stepper{position:sticky;top:0;z-index:20;background:rgba(251,248,241,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.stepper-inner{max-width:1080px;margin:0 auto;padding:8px 12px 0}
+.pills{display:flex;gap:3px;justify-content:space-between;flex-wrap:nowrap;overflow:hidden;padding-bottom:6px;position:relative}
+.pill{flex:0 1 auto;min-width:0;display:flex;align-items:center;justify-content:center;gap:5px;background:none;border:1px solid transparent;border-radius:999px;padding:4px 8px 4px 4px;font:500 .66rem 'Fira Code',monospace;letter-spacing:.02em;text-transform:uppercase;color:var(--muted);cursor:pointer;white-space:nowrap}
+.pill .n{display:inline-flex;flex-shrink:0;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#fff;border:1px solid var(--line);font-size:.62rem;color:var(--navy)}
+.pill .lbl{overflow:hidden;text-overflow:ellipsis}
+.pill .lbl-c{display:none;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:860px){.pill .lbl{display:none} .pill .lbl-c{display:inline}}
+@media (max-width:560px){.pill .lbl-c{display:none} .pill{padding:4px 2px;gap:0}}
+.pill.done .n{background:var(--green);border-color:var(--green);color:#fff}
+.pill.active{color:var(--blue);border-color:var(--blue);background:#fff}
+.pill.active .n{background:var(--blue);border-color:var(--blue);color:#fff}
+.progress{height:4px;background:#ece7db}
+.progress>div{height:100%;background:var(--amber);width:0;transition:width .3s}
+.stepper-meta{display:flex;justify-content:space-between;align-items:center;font:400 .68rem 'Fira Code',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:4px 0 2px}
+.stepper-meta button{background:none;border:0;color:var(--muted);font:inherit;cursor:pointer;text-decoration:underline;padding:0}
+/* layout */
+main{max-width:860px;margin:0 auto;padding:28px 20px 40px}
+main>section{scroll-margin-top:96px}
+.sec-hidden{position:absolute;left:-99999px;top:0;width:820px;visibility:hidden}
+.sec-visible{position:static;visibility:visible}
+.badge{display:inline-block;font:500 .7rem 'Fira Code',monospace;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
+.lead{font-size:1.05rem;color:var(--muted);max-width:640px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin:18px 0;box-shadow:0 1px 3px rgba(20,30,50,.05)}
+.def{background:var(--blue-bg);border-left:5px solid var(--blue);border-radius:0 12px 12px 0;padding:14px 20px;margin:18px 0}
+.def .tt,.nota .tt,.warn .tt,.ok-box .tt{font:500 .7rem 'Fira Code',monospace;letter-spacing:.15em;text-transform:uppercase;margin-bottom:4px}
+.def .tt{color:var(--blue)}
+.ejemplo{border:1px solid #e8cfa8;border-radius:12px;margin:18px 0;overflow:hidden;background:#fff}
+.ejemplo .head{background:var(--amber);color:#fff;padding:8px 18px;font:600 .85rem 'Hanken Grotesk',sans-serif;letter-spacing:.02em}
+.ejemplo .body{padding:12px 18px 16px}
+.nota{background:var(--amber-bg);border-left:5px solid var(--amber);border-radius:0 12px 12px 0;padding:12px 18px;margin:16px 0}
+.nota .tt{color:var(--amber)}
+.warn{background:var(--rust-bg);border-left:5px solid var(--rust);border-radius:0 12px 12px 0;padding:12px 18px;margin:16px 0}
+.warn .tt{color:var(--rust)}
+.ok-box{background:var(--green-bg);border-left:5px solid var(--green);border-radius:0 12px 12px 0;padding:12px 18px;margin:16px 0}
+.ok-box .tt{color:var(--green)}
+.cita{font-family:'Fraunces',serif;font-style:italic;font-size:1.15rem;color:var(--navy);border-left:3px solid var(--amber);padding:6px 18px;margin:14px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:760px){.grid3{grid-template-columns:1fr}}
+@media (max-width:640px){.grid2{grid-template-columns:1fr} h2{font-size:1.6rem} main{padding:20px 16px 32px}}
+table.tabla{width:100%;border-collapse:collapse;font-size:.95rem;margin:10px 0}
+table.tabla th,table.tabla td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+table.tabla th{font:500 .7rem 'Fira Code',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.tabla-wrap{overflow-x:auto;overflow-y:hidden !important;position:relative}
+ul.lista{padding-left:1.2em} ul.lista li{margin:.35em 0}
+ol.lista{padding-left:1.3em} ol.lista li{margin:.35em 0}
+/* pasos */
+.paso{border:1px solid var(--line);border-radius:10px;margin:8px 0;background:#fff;scroll-margin-top:100px}
+.paso>button{width:100%;text-align:left;background:none;border:0;padding:10px 14px;font:600 .95rem 'Hanken Grotesk',sans-serif;color:var(--navy);cursor:pointer;display:flex;gap:10px;align-items:center}
+.paso>button .num{font:500 .7rem 'Fira Code',monospace;color:#fff;background:var(--blue);border-radius:6px;padding:2px 7px;letter-spacing:.05em}
+.paso>button .chev{margin-left:auto;transition:transform .2s;color:var(--muted)}
+.paso.open>button .chev{transform:rotate(90deg)}
+.paso .cont{display:none;padding:2px 16px 14px;border-top:1px dashed var(--line)}
+.paso.open .cont{display:block}
+/* actividades */
+.act{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:18px 0;border-top:4px solid var(--green)}
+.act.gate{border-top-color:var(--amber);margin:12px 0}
+.act .tt{font:500 .7rem 'Fira Code',monospace;letter-spacing:.15em;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+.act.gate .tt{color:var(--amber)}
+.act .q{font-weight:600;margin:.4em 0}
+.opts{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;text-align:left;font:400 .95rem 'Hanken Grotesk',sans-serif;color:var(--ink);width:100%}
+.opt:hover{border-color:var(--blue)}
+.opt .k{font:500 .7rem 'Fira Code',monospace;color:var(--muted);padding-top:3px;flex-shrink:0}
+.opt.right{border-color:var(--green);background:var(--green-bg)}
+.opt.wrong{border-color:var(--rust);background:var(--rust-bg)}
+.opt.dim{opacity:.55}
+.opt:disabled{cursor:default}
+.fb{margin-top:8px;padding:10px 14px;border-radius:10px;font-size:.95rem;display:none}
+.fb.show{display:block}
+.fb.good{background:var(--green-bg);border:1px solid #bcd4c4;color:#274a35}
+.fb.bad{background:var(--rust-bg);border:1px solid #e6c2b6;color:#6e2c1c}
+.fb.info{background:var(--blue-bg);border:1px solid #c8d6e8;color:#1e3f66}
+.reveal{display:none;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+.gated-box{display:none} .gated-box.open{display:block} .gated.open{display:none}
+.reveal.show{display:block}
+.numrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0}
+.numrow .pre{font-family:'Hanken Grotesk',sans-serif;font-weight:600}
+input.num{width:130px;font:500 1rem 'Fira Code',monospace;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;text-align:center}
+input.num:focus{outline:2px solid var(--blue);border-color:var(--blue)}
+input.num.right{border-color:var(--green);background:var(--green-bg)}
+input.num.wrong{border-color:var(--rust);background:var(--rust-bg)}
+.btn{background:var(--blue);color:#fff;border:0;border-radius:9px;padding:8px 16px;font:600 .9rem 'Hanken Grotesk',sans-serif;cursor:pointer}
+.btn:hover{background:#234a7a}
+.btn.sec{background:#fff;color:var(--blue);border:1px solid var(--blue)}
+.btn.sec:hover{background:var(--blue-bg)}
+.btn.small{padding:5px 11px;font-size:.8rem}
+.btn.amber{background:var(--amber)} .btn.amber:hover{background:#a86530}
+.btn.ghost{background:none;color:var(--muted);border:1px solid var(--line)}
+.btn.ghost:hover{background:#fff}
+.btn:disabled{opacity:.5;cursor:default}
+.btn:disabled:hover{background:var(--blue)} .btn.ghost:disabled:hover{background:none} .btn.sec:disabled:hover{background:#fff}
+.acciones{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.estado{font:500 .75rem 'Fira Code',monospace;color:var(--muted);margin-left:auto}
+.pista{background:var(--amber-bg);border-left:4px solid var(--amber);border-radius:0 10px 10px 0;padding:8px 14px;margin:8px 0;font-size:.95rem}
+.pista .tt{font:500 .65rem 'Fira Code',monospace;letter-spacing:.15em;text-transform:uppercase;color:var(--amber);margin-bottom:2px}
+.solucion{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
+/* traductor */
+.trad{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:18px 0;border-top:4px solid var(--violet)}
+.trad .tt{font:500 .7rem 'Fira Code',monospace;letter-spacing:.15em;text-transform:uppercase;color:var(--violet);margin-bottom:6px}
+.trad-row{display:grid;grid-template-columns:1fr 1.1fr;gap:12px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line)}
+.trad-row:last-of-type{border-bottom:0}
+@media (max-width:640px){.trad-row{grid-template-columns:1fr}}
+.trad-row .frase{font-family:'Fraunces',serif;font-style:italic;font-size:1.05rem;color:var(--navy)}
+.trad-row .chips{margin:0}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 13px;font:500 .9rem 'Hanken Grotesk',sans-serif;cursor:pointer;color:var(--navy)}
+.chip:hover{border-color:var(--violet)}
+.chip.on{background:var(--violet);border-color:var(--violet);color:#fff}
+.chip.right{background:var(--green-bg);border-color:var(--green)}
+.chip.wrong{background:var(--rust-bg);border-color:var(--rust)}
+.chip:disabled{cursor:default}
+.chip.lvl{font:500 .8rem 'Hanken Grotesk',sans-serif}
+.trad-res{margin-top:12px}
+/* laboratorio */
+.lab-panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:18px 0;border-top:4px solid var(--violet)}
+.lab-step{font:500 .7rem 'Fira Code',monospace;letter-spacing:.15em;text-transform:uppercase;color:var(--violet);margin:14px 0 4px}
+.sl label{font:500 .75rem 'Fira Code',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sl input[type=range]{width:100%;accent-color:var(--violet)}
+.sl .val{font:500 .9rem 'Fira Code',monospace;color:var(--violet)}
+canvas{width:100%;height:auto;display:block;border-radius:10px;background:#fff;border:1px solid var(--line)}
+.lab-status{margin-top:10px;padding:10px 14px;border-radius:10px;font-size:.95rem;background:var(--violet-bg);border:1px solid #d9cdea;color:#3b2a5e}
+.lab-status b{color:var(--violet)}
+.lab-status.hit{background:var(--green-bg);border-color:#bcd4c4;color:#274a35}
+.lab-status.hit b{color:var(--green)}
+textarea{width:100%;font:400 .95rem 'Hanken Grotesk',sans-serif;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;resize:none;overflow:hidden;min-height:44px;line-height:1.5}
+textarea:focus{outline:2px solid var(--blue);border-color:var(--blue)}
+/* práctica */
+.ej{background:#fff;border:1px solid var(--line);border-radius:14px;margin:16px 0;overflow:hidden;scroll-margin-top:100px}
+.ej .ej-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--line);background:#fcfbf8;flex-wrap:wrap}
+.ej .ej-num{font:500 .75rem 'Fira Code',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.ej .ej-body{padding:12px 18px 16px}
+.ej .titulo{font-family:'Fraunces',serif;font-size:1.15rem;color:var(--navy);margin:2px 0 6px}
+.ej .enun{background:var(--blue-bg);border-radius:10px;padding:10px 14px;margin:8px 0 4px}
+.ej .act{margin:12px 0;border-top-color:var(--blue)}
+.ej .act .tt{color:var(--blue)}
+.progreso{font:500 .8rem 'Fira Code',monospace;color:var(--muted);margin:8px 0}
+.progreso b{color:var(--green)}
+/* portada */
+.hero{padding:26px 0 8px}
+.hero h1{font-size:clamp(2.1rem,6vw,3.6rem);font-weight:700;color:var(--navy);line-height:1.05}
+.hero .sub{font:500 .75rem 'Fira Code',monospace;letter-spacing:.3em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.ruta{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin:18px 0}
+.ruta button{text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;font-family:'Hanken Grotesk',sans-serif;color:var(--ink)}
+.ruta button:hover{border-color:var(--blue);box-shadow:0 2px 8px rgba(43,90,147,.12)}
+.ruta .n{font:500 .7rem 'Fira Code',monospace;color:var(--blue);letter-spacing:.12em}
+.ruta .t{font-family:'Fraunces',serif;font-size:1.05rem;color:var(--navy);margin:2px 0}
+.ruta .d{font-size:.85rem;color:var(--muted)}
+.navsc{display:flex;justify-content:space-between;gap:10px;margin-top:26px;flex-wrap:wrap}
+.fab{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--navy);color:#fff;border:0;border-radius:999px;padding:10px 16px;font:600 .85rem 'Hanken Grotesk',sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px}
+.fab kbd{font:500 .7rem 'Fira Code',monospace;background:rgba(255,255,255,.18);border-radius:5px;padding:1px 6px}
+.modal-bg{position:fixed;inset:0;background:rgba(15,34,68,.55);z-index:40;display:none;align-items:center;justify-content:center;padding:16px}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:14px;max-width:640px;width:100%;max-height:90vh;overflow:auto;padding:18px 22px;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.modal h3{margin-top:0}
+.modal .cerrar{float:right;background:none;border:0;font-size:1.3rem;cursor:pointer;color:var(--muted)}
+.modal table.tabla td{padding:6px 10px}
+.rep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin:14px 0}
+.rep-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.rep-box .k{font:500 .68rem 'Fira Code',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.rep-box .v{font-family:'Fraunces',serif;font-size:1.5rem;color:var(--navy)}
+.rep-box .d{font-size:.85rem;color:var(--muted)}
+input.txt{width:100%;font:400 1rem 'Hanken Grotesk',sans-serif;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.mapa{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+.mapa div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:.9rem}
+.mapa .n{font:500 .68rem 'Fira Code',monospace;letter-spacing:.12em;color:var(--blue)}
+.mapa .t{font-family:'Fraunces',serif;color:var(--navy);font-size:1rem;margin:2px 0 4px}
+@media print{.stepper,.fab,.navsc,.site-footer,.topbar{display:none} .sec-hidden{position:static;visibility:visible;width:auto}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div>
+        <div class="brand-inspt">Escuela Philips</div>
+        <div class="brand-title">Ecuaciones diferenciales · Ley de enfriamiento de Newton</div>
+        <div class="brand-sub">Matemática · 5.º año</div>
+      </div>
+    </div>
+    <div class="lab-logo">
+      <div class="lab-name"><span class="bullet"></span><span class="lab">laboratorio</span><span class="best">best</span><span class="ia">-IA</span></div>
+      <div class="lab-sub">Prof. Ariel L. Cardozo Delgado</div>
+    </div>
+  </div>
+</header>
+
+<nav class="stepper" id="stepper">
+  <div class="stepper-inner">
+    <div class="pills" id="pills"></div>
+    <div class="progress"><div id="progBar"></div></div>
+    <div class="stepper-meta"><span id="progTxt"></span><button type="button" id="btnReset">Reiniciar recorrido</button></div>
+  </div>
+</nav>
+
+<main>
+
+<!-- 0 INICIO -->
+<section id="s0" class="sec-visible">
+  <div class="hero">
+    <div class="sub">Unidad 5 · Ecuaciones diferenciales</div>
+    <h1>¿Qué tan rápido se enfría?</h1>
+    <p class="lead">Un problema completo, de la frase en palabras al número final. Primero traducís una ley física a una ecuación diferencial, después la resolvés por variables separables y al final usás los datos para encontrar la constante que nadie te dio. Cerrás con dos problemas hermanos para hacer solo.</p>
+  </div>
+  <div class="card">
+    <div class="badge">El problema</div>
+    <p class="cita">Un objeto se calienta a 100 °C y se deja enfriar en una habitación cuya temperatura ambiente es constante a 30 °C. Si después de 10 minutos la temperatura del objeto es 80 °C, hallar la constante \(K\) de la Ley de Enfriamiento de Newton.</p>
+    <p>Fijate que el enunciado <b>no da la ecuación</b> ni la función \(T(t)\): da una ley en palabras y tres temperaturas. Todo lo demás lo construís vos.</p>
+  </div>
+  <div class="def">
+    <div class="tt">Al terminar vas a poder</div>
+    <ul class="lista">
+      <li>Traducir "la velocidad de cambio es proporcional a la diferencia" a \(\dfrac{dT}{dt} = K\,(T - T_a)\).</li>
+      <li>Resolver esa ecuación por variables separables, justificando cada paso (incluido por qué se van las barras del valor absoluto).</li>
+      <li>Usar la condición inicial para hallar \(A\) y el segundo dato para hallar \(K\), sin confundir los dos.</li>
+      <li>Interpretar el signo de \(K\) y predecir temperaturas futuras con la función que armaste.</li>
+    </ul>
+  </div>
+  <div class="ruta">
+    <button data-go="1"><div class="n">1</div><div class="t">La ley</div><div class="d">De la frase en palabras a la ecuación diferencial.</div></button>
+    <button data-go="2"><div class="n">2</div><div class="t">Plantear</div><div class="d">Los datos, la ecuación con números y qué buscamos.</div></button>
+    <button data-go="3"><div class="n">3</div><div class="t">Resolver</div><div class="d">Variables separables, paso por paso. Vos decidís qué sigue.</div></button>
+    <button data-go="4"><div class="n">4</div><div class="t">Las constantes</div><div class="d">Primero A con t = 0, después K con t = 10. Con laboratorio.</div></button>
+    <button data-go="5"><div class="n">5</div><div class="t">Práctica</div><div class="d">Dos problemas hermanos, con pistas y resolución completa.</div></button>
+    <button data-go="6"><div class="n">6</div><div class="t">Cierre</div><div class="d">El mapa del método y tu reporte en PDF.</div></button>
+  </div>
+  <div class="nota"><div class="tt">Cómo se recorre</div>Las pantallas van en orden pero ninguna se bloquea. Antes de cada paso se te pregunta qué harías; la explicación aparece después de responder, acertes o no. Tené la carpeta a mano: lo que se calcula acá se escribe ahí. Con la tecla <b>T</b> se abre la tabla de fórmulas.</div>
+  <div class="navsc"><span></span><button class="btn" data-go="1">Empezar · La ley →</button></div>
+</section>
+
+<!-- 1 LA LEY -->
+<section id="s1" class="sec-hidden">
+  <div class="badge">Pantalla 1</div>
+  <h2>La ley, en palabras y en símbolos</h2>
+  <p class="lead">El problema se apoya en la <b>Ley de enfriamiento de Newton</b>. Antes de escribir una sola fórmula, leela dos veces:</p>
+  <p class="cita">La velocidad a la que cambia la temperatura de un objeto es proporcional a la diferencia entre su temperatura y la temperatura del ambiente.</p>
+  <p>Vamos a traducir esa oración al lenguaje matemático. Llamamos \(T(t)\) a la temperatura del objeto en el instante \(t\), y \(T_a\) a la temperatura ambiente, que es constante. Cada pedazo de la frase tiene su símbolo: elegilo.</p>
+
+  <div class="trad" id="trad">
+    <div class="tt">Traducir</div>
+    <div class="trad-row" data-row="0"><div class="frase">"la velocidad a la que cambia la temperatura"</div><div class="chips"><button type="button" class="chip" data-c="0">\(T(t)\)</button><button type="button" class="chip" data-c="1">\(\dfrac{dT}{dt}\)</button><button type="button" class="chip" data-c="2">\(T - T_a\)</button></div></div>
+    <div class="trad-row" data-row="1"><div class="frase">"la diferencia entre su temperatura y la del ambiente"</div><div class="chips"><button type="button" class="chip" data-c="0">\(T + T_a\)</button><button type="button" class="chip" data-c="1">\(\dfrac{T}{T_a}\)</button><button type="button" class="chip" data-c="2">\(T - T_a\)</button></div></div>
+    <div class="trad-row" data-row="2"><div class="frase">"es proporcional a"</div><div class="chips"><button type="button" class="chip" data-c="0">\(= (\ldots)^2\)</button><button type="button" class="chip" data-c="1">\(= K\cdot(\ldots)\)</button><button type="button" class="chip" data-c="2">\(= (\ldots) + K\)</button></div></div>
+    <div class="trad-res" id="tradRes"></div>
+  </div>
+
+  <div class="gated" id="gLey"><div class="fb show info" data-placeholder>Completá la traducción de arriba: cuando elijas los tres símbolos, acá aparece la ecuación.</div></div>
+  <div class="def gated-box" data-gate="gLey"><div class="tt">La ecuación diferencial</div>
+    \[\dfrac{dT}{dt} = K\,(T - T_a)\]
+    Es el <b>modelo matemático</b> del problema. La incógnita no es un número: es la función \(T(t)\). Y \(K\) es la constante de proporcionalidad, el número que el enunciado nos pide.
+  </div>
+
+  <h3>Antes de seguir: el signo de \(K\)</h3>
+  <p>Todavía no calculamos nada, pero ya se puede razonar algo sobre \(K\). Pensalo con el problema: el objeto está a 100 °C, el ambiente a 30 °C.</p>
+  <div id="leyQ"></div>
+  <div class="navsc"><button class="btn ghost" data-go="0">← Inicio</button><button class="btn" data-go="2">Seguir · Plantear →</button></div>
+</section>
+
+<!-- 2 PLANTEAR -->
+<section id="s2" class="sec-hidden">
+  <div class="badge">Pantalla 2</div>
+  <h2>Plantear con nuestros datos</h2>
+  <p class="lead">Volvemos al enunciado y sacamos todo lo que dice. Son tres datos, y cada uno va a cumplir un papel distinto.</p>
+  <div class="card">
+    <div class="tabla-wrap"><table class="tabla">
+      <tr><th>Lo que dice el enunciado</th><th>En símbolos</th><th>Para qué sirve</th></tr>
+      <tr><td>la habitación está a 30 °C</td><td>\(T_a = 30\)</td><td>entra en la ecuación</td></tr>
+      <tr><td>el objeto se calienta a 100 °C (en \(t = 0\))</td><td>\(T(0) = 100\)</td><td>condición inicial: fija \(A\)</td></tr>
+      <tr><td>a los 10 minutos está a 80 °C</td><td>\(T(10) = 80\)</td><td>segundo dato: fija \(K\)</td></tr>
+    </table></div>
+  </div>
+  <div id="planQ1"></div>
+  <div class="def"><div class="tt">La ecuación del problema</div>
+    \[\dfrac{dT}{dt} = K\,(T - 30)\]
+    El objetivo es hallar \(K\). Pero \(K\) está adentro de una ecuación diferencial: para llegar a él, primero hay que resolverla y encontrar \(T(t)\).
+  </div>
+  <div id="planQ2"></div>
+  <div class="navsc"><button class="btn ghost" data-go="1">← La ley</button><button class="btn" data-go="3">Seguir · Resolver →</button></div>
+</section>
+
+<!-- 3 RESOLVER -->
+<section id="s3" class="sec-hidden">
+  <div class="badge">Pantalla 3</div>
+  <h2>Resolver la ecuación diferencial</h2>
+  <p class="lead">\(\dfrac{dT}{dt} = K\,(T - 30)\) es de <b>variables separables</b>: se puede agrupar todo lo que tiene \(T\) (con \(dT\)) de un lado y todo lo que tiene \(t\) (con \(dt\)) del otro. En cada paso, primero decidís vos qué sigue; después se muestra el desarrollo.</p>
+
+  <div class="ejemplo"><div class="head">Paso a paso · \(\dfrac{dT}{dt} = K\,(T - 30)\)</div><div class="body">
+    <div id="resQ1"></div>
+    <div id="resQ2"></div>
+    <div id="resQ3"></div>
+    <div id="resQ4"></div>
+  </div></div>
+
+  <div class="ok-box"><div class="tt">Solución general</div>
+    \[T(t) = 30 + A\,e^{K\,t}\]
+    Describe la temperatura en cualquier instante \(t\)... pero tiene dos constantes desconocidas, \(A\) y \(K\). Por eso el enunciado dio dos datos: uno para cada una.
+  </div>
+  <div class="navsc"><button class="btn ghost" data-go="2">← Plantear</button><button class="btn" data-go="4">Seguir · Las constantes →</button></div>
+</section>
+
+<!-- 4 CONSTANTES -->
+<section id="s4" class="sec-hidden">
+  <div class="badge">Pantalla 4</div>
+  <h2>Encontrar las constantes</h2>
+  <p class="lead">Tenemos \(T(t) = 30 + A\,e^{K\,t}\) y dos datos: \(T(0) = 100\) y \(T(10) = 80\). El orden importa: la condición inicial primero, porque en \(t = 0\) la exponencial vale \(1\) y \(K\) desaparece. Así \(A\) sale sola.</p>
+
+  <h3>4a · La constante \(A\), con \(t = 0\)</h3>
+  <div id="numA"></div>
+  <div class="gated" id="gA"><div class="fb show info" data-placeholder>Primero calculá \(A\): cuando la respondas se abre la parte 4b.</div></div>
+  <div class="gated-box" data-gate="gA">
+  <div class="ok-box"><div class="tt">Con A ya puesta</div>\[T(t) = 30 + 70\,e^{K\,t}\] Queda una sola incógnita, \(K\), y un solo dato sin usar: \(T(10) = 80\).</div>
+
+  <h3>4b · La constante \(K\), con \(t = 10\)</h3>
+  <div class="lab-panel">
+    <div class="lab-step">1 · Tanteá</div>
+    <p style="margin-top:4px">La curva es \(T(t) = 30 + 70\,e^{K\,t}\). Movés \(K\) y la curva cambia. Hay un solo valor de \(K\) para el cual la curva pasa por el punto <b>(10 ; 80)</b>: buscalo a ojo. Después lo calculamos exacto.</p>
+    <div class="sl" style="margin:8px 0"><label for="slK">K · por minuto</label><input type="range" id="slK" min="-0.12" max="-0.005" step="0.0005" value="-0.06"><div class="val" id="slKv"></div></div>
+    <div id="labFormula" style="text-align:center;min-height:2.4em"></div>
+    <canvas id="labCanvas" width="800" height="420"></canvas>
+    <div class="lab-status" id="labStatus"></div>
+    <div class="lab-step">2 · Calculá exacto</div>
+    <div id="kQ1"></div>
+    <div id="numK"></div>
+  </div>
+
+  <div class="gated" id="gK"><div class="fb show info" data-placeholder>Respondé el \(K\) exacto y el \(K\) numérico: ahí se abren el desarrollo completo y el resultado con su interpretación.</div></div>
+  <div class="gated-box" data-gate="gK">
+  <div class="ejemplo"><div class="head">Desarrollo completo · hallar \(K\)</div><div class="body">
+    <div class="paso"><button type="button"><span class="num">1</span> Reemplazar el dato <span class="chev">▸</span></button><div class="cont">Cuando \(t = 10\), \(T = 80\): \[80 = 30 + 70\,e^{K\cdot 10}\]</div></div>
+    <div class="paso"><button type="button"><span class="num">2</span> Aislar la exponencial <span class="chev">▸</span></button><div class="cont">\[80 - 30 = 70\,e^{10K} \;\Rightarrow\; 50 = 70\,e^{10K} \;\Rightarrow\; \dfrac{50}{70} = e^{10K} \;\Rightarrow\; \dfrac{5}{7} = e^{10K}\] (la fracción se simplificó dividiendo numerador y denominador por \(10\)).</div></div>
+    <div class="paso"><button type="button"><span class="num">3</span> Bajar el exponente con el logaritmo <span class="chev">▸</span></button><div class="cont">La inversa de la exponencial es el logaritmo natural. Lo aplicamos a los dos lados: \[\ln\!\left(\dfrac{5}{7}\right) = \ln\!\left(e^{10K}\right)\] y como \(\ln\!\left(e^{x}\right) = x\): \[\ln\!\left(\dfrac{5}{7}\right) = 10K\]</div></div>
+    <div class="paso"><button type="button"><span class="num">4</span> Despejar \(K\) <span class="chev">▸</span></button><div class="cont">\[K = \dfrac{\ln\!\left(\dfrac{5}{7}\right)}{10} = \dfrac{-0{,}33647}{10} \approx -0{,}03365\] Es decir, \(K \approx -0{,}0336\) por minuto.</div></div>
+    <div class="paso"><button type="button"><span class="num">5</span> Comprobar <span class="chev">▸</span></button><div class="cont">\(T(0) = 30 + 70\,e^{0} = 30 + 70\cdot 1 = 30 + 70 = 100\). ✓ &nbsp; \(T(10) = 30 + 70\,e^{10K} = 30 + 70\cdot\dfrac{5}{7} = 30 + 50 = 80\). ✓ &nbsp; Y la derivada: \(T' = 70\,K\,e^{Kt}\), mientras que \(K\,(T - 30) = K\cdot 70\,e^{Kt}\). Iguales. ✓</div></div>
+  </div></div>
+
+  <div class="ok-box"><div class="tt">Resultado</div>
+    \[K = \dfrac{\ln\!\left(\dfrac{5}{7}\right)}{10} \approx -0{,}0336 \ \text{por minuto}\]
+    El signo negativo es físicamente correcto: la temperatura está <b>disminuyendo</b>. Es lo que habías predicho en la pantalla 1 antes de calcular nada: \(T - 30 > 0\) y \(\dfrac{dT}{dt} < 0\), así que \(K\) tenía que ser negativo.
+  </div>
+  <div id="kQ2"></div>
+
+  <div class="warn"><div class="tt">Los errores que más se repiten</div>
+    <ul class="lista">
+      <li><b>\(A = 100\)</b> "porque \(T(0) = 100\)". El \(30\) también está en \(t = 0\): \(100 = 30 + A\), \(A = 70\). Con \(A = 100\) la función arranca en \(130\) °C.</li>
+      <li><b>Usar primero \(T(10) = 80\)</b>: queda \(80 = 30 + A\,e^{10K}\), una ecuación con dos incógnitas. Siempre primero \(t = 0\).</li>
+      <li><b>\(\ln\!\left(\dfrac{7}{5}\right)\)</b> en vez de \(\ln\!\left(\dfrac{5}{7}\right)\): da \(K\) positivo, y el objeto se calentaría. El signo de \(K\) es un control gratis.</li>
+      <li><b>Dividir por \(100\)</b> en vez de por \(70\): \(\dfrac{50}{100}\) no es \(e^{10K}\). Lo que multiplica a la exponencial es \(A = 70\).</li>
+      <li><b>\(10\,\ln\!\left(\dfrac{5}{7}\right)\)</b> en vez de dividir por \(10\): el \(10\) está multiplicando a \(K\), así que pasa dividiendo.</li>
+    </ul>
+  </div>
+  </div><!-- /gK -->
+  </div><!-- /gA -->
+  <div class="navsc"><button class="btn ghost" data-go="3">← Resolver</button><button class="btn" data-go="5">Seguir · Práctica →</button></div>
+</section>
+
+<!-- 5 PRÁCTICA -->
+<section id="s5" class="sec-hidden">
+  <div class="badge">Pantalla 5</div>
+  <h2>Práctica · dos problemas hermanos</h2>
+  <p class="lead">La misma ley, el mismo camino, otros números. Cada problema trae todo lo que necesitás y se resuelve en los mismos cuatro movimientos: ecuación, \(A\), \(K\) y comprobación. Hacé cada parte en la carpeta antes de responder. Las pistas se piden de a una; la resolución completa se abre después del primer intento.</p>
+  <div class="progreso" id="progreso"></div>
+  <div id="listaEj"></div>
+  <div class="navsc"><button class="btn ghost" data-go="4">← Las constantes</button><button class="btn" data-go="6">Seguir · Cierre →</button></div>
+</section>
+
+<!-- 6 CIERRE -->
+<section id="s6" class="sec-hidden">
+  <div class="badge">Pantalla 6</div>
+  <h2>Cierre y reporte</h2>
+  <p class="lead">Un problema de enfriamiento se resuelve siempre con el mismo mapa. Guardalo: sirve para cualquier cuerpo que se enfría o se calienta hacia un ambiente constante.</p>
+  <div class="mapa">
+    <div><div class="n">1</div><div class="t">Traducir</div>"velocidad de cambio" \(\to \dfrac{dT}{dt}\), "diferencia con el ambiente" \(\to T - T_a\), "proporcional" \(\to K\cdot\)</div>
+    <div><div class="n">2</div><div class="t">Separar e integrar</div>\(\dfrac{dT}{T - T_a} = K\,dt\), \(\ln|T - T_a| = Kt + C\)</div>
+    <div><div class="n">3</div><div class="t">Despejar</div>\(T = T_a + A\,e^{Kt}\), con \(A = e^{C}\)</div>
+    <div><div class="n">4</div><div class="t">\(A\) con \(t = 0\)</div>\(A = T(0) - T_a\): la diferencia inicial con el ambiente</div>
+    <div><div class="n">5</div><div class="t">\(K\) con el otro dato</div>aislar la exponencial, aplicar \(\ln\), dividir por el tiempo</div>
+    <div><div class="n">6</div><div class="t">Controlar</div>\(K < 0\) si se enfría; \(T(0)\) y \(T(t_1)\) tienen que dar los datos</div>
+  </div>
+  <div class="nota"><div class="tt">Lo que queda</div>Toda la clase se puede resumir en una frase: <b>la diferencia con el ambiente decae exponencialmente</b>. \(T - T_a = A\,e^{Kt}\). El objeto nunca llega al ambiente, pero se le acerca tanto como quieras: cuando \(t\) crece, \(e^{Kt} \to 0\) (porque \(K < 0\)) y \(T \to T_a\).</div>
+
+  <div class="card">
+    <div class="grid2">
+      <div><label for="repNombre" class="badge">Nombre y apellido</label><input type="text" id="repNombre" class="txt" autocomplete="off"></div>
+      <div><label for="repCurso" class="badge">Curso</label><input type="text" id="repCurso" class="txt" placeholder="5.º ET / 5.º FT" autocomplete="off"></div>
+    </div>
+    <div class="rep-grid" id="repGrid"></div>
+    <p><b>¿Qué entendiste hoy que antes no?</b></p>
+    <textarea id="metaTxt" rows="2" placeholder="Por ejemplo: por qué A es 70 y no 100…"></textarea>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px">
+      <button type="button" class="btn amber" id="btnPdf">Descargar PDF</button>
+      <span id="pdfAviso" style="font-size:.85rem;color:var(--muted)"></span>
+    </div>
+  </div>
+  <div class="navsc"><button class="btn ghost" data-go="5">← Práctica</button><span></span></div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-quote">"La matemática no exige genios, exige constancia."</div>
+    <div class="footer-lab">
+      <div class="lab-name"><span class="bullet"></span><span class="lab">laboratorio</span><span class="best">best</span><span class="ia">-IA</span></div>
+      <div class="lab-sub">Prof. Ariel L. Cardozo Delgado</div>
+    </div>
+  </div>
+</footer>
+
+<button type="button" class="fab" id="fab">Fórmulas <kbd>T</kbd></button>
+
+<div class="modal-bg" id="modalForm">
+  <div class="modal" role="dialog" aria-label="Tabla de fórmulas">
+    <button type="button" class="cerrar" data-cerrar>×</button>
+    <h3>Fórmulas que se usan hoy</h3>
+    <div class="grid2">
+      <div><div class="badge">Integrales</div><table class="tabla">
+        <tr><td>\(\displaystyle\int k\,dt = k\,t + C\)</td></tr>
+        <tr><td>\(\displaystyle\int \dfrac{1}{u}\,du = \ln|u| + C\)</td></tr>
+        <tr><td>\(\displaystyle\int \dfrac{1}{T - a}\,dT = \ln|T - a| + C\)</td></tr>
+      </table></div>
+      <div><div class="badge">Exponencial y logaritmo</div><table class="tabla">
+        <tr><td>\(e^{\ln(x)} = x\) y \(\ln\!\left(e^{x}\right) = x\)</td></tr>
+        <tr><td>\(e^{a + b} = e^{a}\cdot e^{b}\)</td></tr>
+        <tr><td>\(e^{0} = 1\)</td></tr>
+        <tr><td>\(e^{x} = p \Rightarrow x = \ln(p)\)</td></tr>
+        <tr><td>\(\ln(p) < 0\) si \(0 < p < 1\)</td></tr>
+      </table></div>
+    </div>
+    <div class="def" style="margin-bottom:0"><div class="tt">Ley de enfriamiento de Newton</div>\(\dfrac{dT}{dt} = K\,(T - T_a)\) · solución \(T = T_a + A\,e^{Kt}\) · \(A = T(0) - T_a\) · \(K < 0\) cuando el objeto se enfría.</div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modalReset">
+  <div class="modal" role="dialog" aria-label="Reiniciar">
+    <h3>¿Reiniciar el recorrido?</h3>
+    <p>Se borran tus respuestas, las pistas pedidas y tus anotaciones. No se puede deshacer.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn" id="doReset" style="background:var(--rust)">Sí, reiniciar</button><button type="button" class="btn ghost" data-cerrar>Cancelar</button></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+<script>
+(function(){
+'use strict';
+const $ = (s, r) => (r||document).querySelector(s);
+const $$ = (s, r) => Array.from((r||document).querySelectorAll(s));
+const r = String.raw;
+
+const KOPT = {
+  delimiters: [{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],
+  throwOnError:false,
+  macros: {'\\neq':'\\mathrel{\\text{\\char"2260}}','\\ne':'\\mathrel{\\text{\\char"2260}}','\\lim':'\\mathop{\\text{lím}}\\limits'}
+};
+function tex(el){ if (window.renderMathInElement) renderMathInElement(el||document.body, KOPT); }
+
+/* ===================== CONTENIDO ===================== */
+/* Ítems: tipo 'mcq' (opts, correct, fb por opción, reveal opcional) o 'num' (resp, tol, fbNum, sol).
+   grupo: ley · plantear · resolver · constantes · ej2 · ej3 */
+const TRAD = [
+  {correct:1, ok:r`La velocidad de cambio de una magnitud es su derivada respecto del tiempo: \(\dfrac{dT}{dt}\).`, no:[r`\(T(t)\) es la temperatura misma, no qué tan rápido cambia. Lo que cambia por unidad de tiempo es la derivada, \(\dfrac{dT}{dt}\).`, '', r`\(T - T_a\) es la diferencia con el ambiente: es el otro pedazo de la frase. La "velocidad a la que cambia" es la derivada, \(\dfrac{dT}{dt}\).`]},
+  {correct:2, ok:r`"Diferencia" es resta: temperatura del objeto menos la del ambiente, \(T - T_a\).`, no:[r`"Diferencia" es una resta, no una suma. \(T - T_a\) mide cuánto más caliente está el objeto que el ambiente.`, r`Un cociente compararía por división. La frase dice "diferencia": \(T - T_a\).`, '']},
+  {correct:1, ok:r`"Proporcional a" significa "igual a una constante por": \(K\cdot(T - T_a)\). Esa constante es la que buscamos.`, no:[r`Elevar al cuadrado no es proporcionalidad: si la diferencia se duplica, el cuadrado se cuadruplica. Proporcional es "una constante por": \(K\cdot(\ldots)\).`, '', r`Sumar una constante no es proporcionalidad: con diferencia cero la velocidad sería \(K\), y un objeto a la temperatura del ambiente no cambia. Proporcional es multiplicar: \(K\cdot(\ldots)\).`]}
+];
+const ITEMS = [
+ {id:'q_signo', tipo:'mcq', grupo:'ley', tt:'Predecí', enun:r`El objeto está a \(100\) °C en una habitación a \(30\) °C: \(T - T_a = 100 - 30 = 70\), positivo. Y el objeto se está <b>enfriando</b>. En \(\dfrac{dT}{dt} = K\,(T - T_a)\), ¿qué signo tiene que tener \(K\)?`,
+  opts:[r`Positivo: las constantes de proporcionalidad son positivas.`, r`Negativo: \(\dfrac{dT}{dt} < 0\) y \(T - T_a > 0\), así que \(K\) tiene que ser negativo.`, r`Cero: la temperatura ambiente es constante.`, r`Depende del instante \(t\) que se mire.`], correct:1,
+  fb:[r`Con \(K > 0\) la derivada sería positiva y el objeto se <b>calentaría</b> solo en una habitación más fría. Como se enfría, \(K < 0\).`,
+      r`Se enfría, así que \(\dfrac{dT}{dt} < 0\); y \(T - T_a > 0\). Un producto negativo con un factor positivo: el otro factor, \(K\), es negativo. Guardá esta predicción para el final.`,
+      r`Con \(K = 0\) la temperatura no cambiaría nunca: el objeto se quedaría en \(100\) °C. Pero se enfría: \(K < 0\).`,
+      r`\(K\) es una <b>constante</b>: vale lo mismo todo el tiempo. Lo que cambia con \(t\) es \(T - T_a\). Y \(K\) es negativo porque el objeto se enfría.`]},
+ {id:'q_ec', tipo:'mcq', grupo:'plantear', tt:'La ecuación con los datos', enun:r`Con \(T_a = 30\), ¿cómo queda la ecuación diferencial de este problema?`,
+  opts:[r`\(\dfrac{dT}{dt} = K\,(T - 100)\)`, r`\(\dfrac{dT}{dt} = K\cdot T\)`, r`\(\dfrac{dT}{dt} = K\,(T - 30)\)`, r`\(\dfrac{dT}{dt} = K\,(80 - 30)\)`], correct:2,
+  fb:[r`El \(100\) es de dónde sale el objeto, no el ambiente. La diferencia que manda es con la habitación: \(T - 30\).`,
+      r`La ley habla de la <b>diferencia</b> con el ambiente, no de la temperatura sola. Con \(K\cdot T\) el objeto tendería a \(0\) °C, más frío que la habitación.`,
+      r`La única constante que entra en la ecuación es la del ambiente, \(30\). El \(100\) y el \(80\) son valores de \(T\) en dos instantes: se usan después.`,
+      r`\(80 - 30 = 50\) es un número fijo: la temperatura bajaría en línea recta y cruzaría los \(30\) °C sin frenar. La diferencia tiene que ser con la función \(T\): \(T - 30\).`]},
+ {id:'q_porque', tipo:'mcq', grupo:'plantear', tt:'¿Por qué hay que resolver la ecuación?', enun:r`Tenemos \(\dfrac{dT}{dt} = K\,(T - 30)\) y queremos \(K\). ¿Por qué no podemos despejarlo directamente de ahí con los datos?`,
+  opts:[r`Porque en la ecuación aparece la velocidad \(\dfrac{dT}{dt}\), y eso nadie lo midió: los datos son temperaturas.`, r`Porque \(K\) está multiplicando y no se puede pasar dividiendo.`, r`Porque falta la temperatura a los \(20\) minutos.`, r`Porque \(30\) no es un dato confiable.`], correct:0,
+  fb:[r`Para despejar \(K\) de la ecuación haría falta conocer \(\dfrac{dT}{dt}\) en algún instante, y lo que tenemos son dos valores de \(T\). Por eso primero buscamos la función \(T(t)\).`,
+      r`Sí se puede pasar dividiendo. El problema es otro: no conocemos \(\dfrac{dT}{dt}\) en ningún instante. Primero hay que encontrar \(T(t)\).`,
+      r`Con los dos datos alcanza: uno para \(A\) y otro para \(K\). Lo que falta es la función \(T(t)\), porque la ecuación habla de la derivada y nadie la midió.`,
+      r`El \(30\) es el dato más firme de todos. El obstáculo es que la ecuación habla de \(\dfrac{dT}{dt}\) y los datos son temperaturas. Primero hay que encontrar \(T(t)\).`]},
+ {id:'r_sep', tipo:'mcq', grupo:'resolver', tt:'Paso 1 · ¿Cómo separás?', gate:true, enun:r`Tratamos \(\dfrac{dT}{dt}\) como un cociente. ¿Cómo quedan las variables separadas?`,
+  opts:[r`\((T - 30)\,dT = K\,dt\)`, r`\(\dfrac{1}{T - 30}\,dT = K\,dt\)`, r`\(\dfrac{dT}{K} = (T - 30)\,dt\)`, r`\(dT = K\,(T - 30)\)`], correct:1,
+  fb:[r`\((T - 30)\) está multiplicando a la derecha: para pasarlo a la izquierda pasa <b>dividiendo</b>. Queda \(\dfrac{1}{T - 30}\,dT\).`,
+      r`\((T - 30)\) pasa dividiendo a la izquierda y \(dt\) pasa multiplicando a la derecha. Cada lado con una sola variable.`,
+      r`Así queda \(T\) de los dos lados. Lo que tiene que pasar dividiendo es \((T - 30)\), no \(K\).`,
+      r`Falta el \(dt\) a la derecha, y \((T - 30)\) sigue del lado de \(t\). Hay que pasarlo dividiendo: \(\dfrac{1}{T - 30}\,dT = K\,dt\).`],
+  reveal:r`<p><b>Separar las variables.</b> Pasamos \((T - 30)\) dividiendo al lado izquierdo y \(dt\) multiplicando al lado derecho:</p>\[\dfrac{1}{T - 30}\,dT = K\,dt\]<p>A la izquierda solo hay \(T\); a la derecha solo hay \(t\) (y la constante \(K\)).</p>`},
+ {id:'r_int', tipo:'mcq', grupo:'resolver', tt:'Paso 2 · ¿Cuánto da la integral?', gate:true, enun:r`Integramos los dos lados: \(\displaystyle\int \dfrac{1}{T - 30}\,dT = \int K\,dt\). ¿Cuánto da la integral de la izquierda?`,
+  opts:[r`\(\dfrac{(T - 30)^2}{2}\)`, r`\(\ln|T| - 30\)`, r`\(\ln|T - 30|\)`, r`\(-\dfrac{1}{(T - 30)^2}\)`], correct:2,
+  fb:[r`Esa es la integral de \((T - 30)\), no de \(\dfrac{1}{T - 30}\). Cuando el integrando es \(\dfrac{1}{u}\), el resultado es \(\ln|u|\).`,
+      r`El \(30\) no se separa del logaritmo: es \(\displaystyle\int \dfrac{1}{u}\,du = \ln|u|\) con \(u = T - 30\). Da \(\ln|T - 30|\).`,
+      r`Integral de tipo logarítmico: \(\displaystyle\int \dfrac{1}{u}\,du = \ln|u|\), con \(u = T - 30\).`,
+      r`Eso se parece a una derivada, no a una integral. La integral de \(\dfrac{1}{u}\) es \(\ln|u|\): \(\ln|T - 30|\).`],
+  reveal:r`<p><b>Integrar los dos lados.</b></p>\[\int \dfrac{1}{T - 30}\,dT = \int K\,dt\]<p>Izquierda: integral logarítmica, \(\displaystyle\int \dfrac{1}{u}\,du = \ln|u|\). Derecha: \(K\) es constante, \(\displaystyle\int K\,dt = K\,t\). Cada integral trae su constante, pero las dos se juntan en <b>una sola</b> \(C\), que ponemos del lado de \(t\):</p>\[\ln|T - 30| = K\,t + C\]`},
+ {id:'r_abs', tipo:'mcq', grupo:'resolver', tt:'Paso 3 · ¿Se pueden sacar las barras?', gate:true, enun:r`Tenemos \(\ln|T - 30| = K\,t + C\). ¿Podemos escribir \(\ln(T - 30)\) sin el valor absoluto?`,
+  opts:[r`No: las barras del valor absoluto nunca se pueden sacar.`, r`Sí, porque el logaritmo siempre da un número positivo.`, r`Sí, porque \(K\) es negativo y eso cancela el signo.`, r`Sí: el objeto se enfría desde \(100\) °C hacia \(30\) °C, así que \(T > 30\) siempre y \(T - 30 > 0\).`], correct:3,
+  fb:[r`Se pueden sacar cuando se conoce el signo de lo de adentro. Y acá se conoce: el objeto siempre está más caliente que la habitación, \(T - 30 > 0\).`,
+      r`El logaritmo puede dar negativo (\(\ln(0{,}5) < 0\)). Lo que importa es el signo de lo de <b>adentro</b>, \(T - 30\), que es positivo.`,
+      r`El signo de \(K\) no tiene que ver con las barras: están alrededor de \(T - 30\), que es positivo durante todo el enfriamiento.`,
+      r`El objeto arranca en \(100\) °C y se acerca a los \(30\) °C sin cruzarlos: \(T - 30 > 0\) siempre, así que \(|T - 30| = T - 30\).`],
+  reveal:r`<p><b>Eliminar el valor absoluto.</b> El objeto se enfría desde \(100\) °C hacia \(30\) °C: su temperatura \(T\) es siempre mayor que \(30\), así que \(T - 30 > 0\) y las barras sobran.</p>\[\ln(T - 30) = K\,t + C\]`},
+ {id:'r_desp', tipo:'mcq', grupo:'resolver', tt:'Paso 4 · ¿Cómo despejás T?', gate:true, enun:r`Queremos \(T(t)\), no \(\ln(T - 30)\). ¿Qué hacemos para cancelar el logaritmo?`,
+  opts:[r`Aplicar la exponencial \(e^{(\ldots)}\) a los dos lados.`, r`Dividir los dos lados por \(\ln\).`, r`Derivar los dos lados.`, r`Elevar los dos lados al cuadrado.`], correct:0,
+  fb:[r`La exponencial es la inversa del logaritmo natural: \(e^{\ln(x)} = x\). Aplicada a los dos lados deja \(T - 30\) solo.`,
+      r`\(\ln\) no es un número que multiplica: es una función. Se deshace con su inversa, la exponencial.`,
+      r`Derivar borra la constante \(C\) y nos devuelve la ecuación diferencial: volvemos al principio. Para deshacer el logaritmo se usa \(e^{(\ldots)}\).`,
+      r`Elevar al cuadrado deshace una raíz, no un logaritmo. La inversa del logaritmo natural es la exponencial.`],
+  reveal:r`<p><b>Despejar \(T(t)\).</b> Aplicamos la exponencial a los dos lados:</p>\[e^{\ln(T - 30)} = e^{K\,t + C}\]\[T - 30 = e^{K\,t}\cdot e^{C}\]<p>(usamos \(e^{a + b} = e^{a}\cdot e^{b}\).) <b>El truco de la constante:</b> \(e^{C}\) es "\(e\) elevado a una constante", o sea, otra constante. La renombramos \(A = e^{C}\):</p>\[T - 30 = A\,e^{K\,t}\]<p>y pasamos el \(30\) sumando:</p>\[T(t) = 30 + A\,e^{K\,t}\]`},
+ {id:'n_A', tipo:'num', grupo:'constantes', tt:'Calculá A', enun:r`Reemplazá la condición inicial \(T(0) = 100\) en \(T(t) = 30 + A\,e^{K\,t}\): cuando \(t = 0\), \(T = 100\). ¿Cuánto vale \(A\)?`, pre:r`\(A =\)`, resp:70, tol:0.01, unidad:'',
+  pistas:[r`En \(t = 0\) el exponente es \(K\cdot 0 = 0\), y \(e^{0} = 1\). La \(K\) desaparece sola.`, r`Queda \(100 = 30 + A\cdot 1 = 30 + A\). Despejá \(A\).`, r`\(A = 100 - 30\). Es la diferencia inicial entre el objeto y el ambiente.`],
+  fbNum:[{v:100, t:r`Ese es \(T(0)\), no \(A\). El \(30\) también está en \(t = 0\): \(100 = 30 + A\), así que \(A = 100 - 30 = 70\).`}, {v:30, t:r`\(30\) es la temperatura ambiente, que ya está sumada aparte. \(A\) es lo que multiplica a la exponencial: \(100 = 30 + A\), \(A = 70\).`}, {v:-70, t:r`El signo: el objeto arranca <b>arriba</b> del ambiente, así que \(A = 100 - 30 = 70\), positivo.`}, {v:50, t:r`\(50\) es \(80 - 30\), la diferencia a los 10 minutos. Para \(A\) se usa \(t = 0\): \(A = 100 - 30 = 70\).`}],
+  fbOk:r`\(A = 70\): la diferencia inicial con el ambiente.`,
+  fbNo:r`En \(t = 0\): \[100 = 30 + A\,e^{K\cdot 0} = 30 + A\,e^{0} = 30 + A\cdot 1 = 30 + A\] Entonces \(A = 100 - 30 = 70\).`,
+  sol:r`<p>Sustituimos \(t = 0\) y \(T = 100\) en la solución general:</p>\[100 = 30 + A\,e^{K\cdot 0} = 30 + A\,e^{0}\]<p>Cualquier número distinto de cero elevado a \(0\) da \(1\), así que \(e^{0} = 1\):</p>\[100 = 30 + A\cdot 1 \;\Rightarrow\; A = 100 - 30 \;\Rightarrow\; A = 70\]<p>La función ahora es más específica: \(T(t) = 30 + 70\,e^{K\,t}\).</p>`},
+ {id:'q_Kex', tipo:'mcq', grupo:'constantes', tt:'K exacto', enun:r`Reemplazá \(t = 10\), \(T = 80\) en \(T(t) = 30 + 70\,e^{K\,t}\) y despejá \(K\). ¿Cuál es la expresión exacta?`,
+  opts:[r`\(K = \dfrac{\ln\!\left(\dfrac{7}{5}\right)}{10}\)`, r`\(K = 10\,\ln\!\left(\dfrac{5}{7}\right)\)`, r`\(K = \dfrac{\ln\!\left(\dfrac{80}{100}\right)}{10}\)`, r`\(K = \dfrac{\ln\!\left(\dfrac{5}{7}\right)}{10}\)`], correct:3,
+  fb:[r`La fracción está al revés: \(80 - 30 = 50\) y \(\dfrac{50}{70} = \dfrac{5}{7}\). Con \(\dfrac{7}{5}\) daría \(K > 0\) y el objeto se calentaría.`,
+      r`En \(\ln\!\left(\dfrac{5}{7}\right) = 10K\) el \(10\) está <b>multiplicando</b> a \(K\): pasa dividiendo, no multiplicando.`,
+      r`\(\dfrac{80}{100}\) usa las temperaturas sin restar el ambiente. Primero \(80 - 30 = 70\,e^{10K}\), y recién ahí \(\dfrac{50}{70} = \dfrac{5}{7}\).`,
+      r`\[80 - 30 = 70\,e^{10K} \;\Rightarrow\; \dfrac{50}{70} = \dfrac{5}{7} = e^{10K} \;\Rightarrow\; \ln\!\left(\dfrac{5}{7}\right) = 10K\] Y \(\ln\!\left(\dfrac{5}{7}\right) < 0\), como habías predicho.`]},
+ {id:'n_K', tipo:'num', grupo:'constantes', tt:'K numérico', enun:r`Calculá el valor numérico de \(K = \dfrac{\ln\left(\frac{5}{7}\right)}{10}\) con cuatro decimales (usá la coma: por ejemplo \(-0{,}1234\)).`, pre:r`\(K \approx\)`, resp:-0.03365, tol:0.0006, unidad:'por minuto',
+  pistas:[r`Primero la fracción: \(\dfrac{5}{7} \approx 0{,}7143\). Después el logaritmo natural de ese número.`, r`\(\ln(0{,}7143) \approx -0{,}3365\). Fijate que da negativo: el número está entre \(0\) y \(1\).`, r`Dividí por \(10\): \(\dfrac{-0{,}3365}{10}\).`],
+  fbNum:[{v:0.03365, t:r`El valor está bien pero le falta el signo: \(\ln\!\left(\dfrac{5}{7}\right)\) es negativo porque \(\dfrac{5}{7} < 1\). \(K \approx -0{,}0336\).`}, {v:-0.3365, t:r`Ese es \(\ln\!\left(\dfrac{5}{7}\right)\) sin dividir por \(10\). \(K = \dfrac{-0{,}3365}{10} \approx -0{,}0336\).`}, {v:0.03365*10, t:r`Multiplicaste por \(10\) en vez de dividir, y además falta el signo. \(K = \dfrac{-0{,}3365}{10} \approx -0{,}0336\).`}, {v:-3.365, t:r`Multiplicaste por \(10\) en vez de dividir. \(K = \dfrac{-0{,}3365}{10} \approx -0{,}0336\).`}, {v:0.0336, t:r`El valor está bien pero le falta el signo: \(K \approx -0{,}0336\).`}],
+  fbOk:r`\(K \approx -0{,}0336\) por minuto. Negativo: el objeto se enfría.`,
+  fbNo:r`\(\dfrac{5}{7} \approx 0{,}7143\); \(\ln(0{,}7143) \approx -0{,}3365\); dividido por \(10\): \(K \approx -0{,}0336\) por minuto.`,
+  sol:r`<p>\(\dfrac{5}{7} = 0{,}71428\ldots\) · \(\ln(0{,}71428) = -0{,}33647\) · \(K = \dfrac{-0{,}33647}{10} = -0{,}033647 \approx -0{,}0336\) por minuto.</p>`},
+ {id:'q_pred', tipo:'mcq', grupo:'constantes', tt:'Usar lo que construiste', enun:r`Con \(T(t) = 30 + 70\,e^{K\,t}\) y \(K \approx -0{,}0336\), ¿qué temperatura tiene el objeto a los \(20\) minutos?`,
+  opts:[r`\(60\) °C, porque bajó \(20\) °C en los primeros \(10\) minutos y vuelve a bajar \(20\).`, r`\(\approx 65{,}7\) °C`, r`\(\approx 50\) °C`, r`\(\approx 70{,}7\) °C`], correct:1,
+  fb:[r`El enfriamiento no es en línea recta: cuanto más cerca del ambiente, más despacio baja. Calculalo: \(e^{-0{,}0336\cdot 20} = e^{-0{,}672} \approx 0{,}511\), y \(T(20) = 30 + 70\cdot 0{,}511 = 30 + 35{,}7 = 65{,}7\) °C.`,
+      r`\[e^{20K} = e^{-0{,}0336\cdot 20} = e^{-0{,}672} \approx 0{,}511\] \[T(20) = 30 + 70\cdot 0{,}511 = 30 + 35{,}7 = 65{,}7\ \text{°C}\] Otra forma, sin calculadora: \(e^{20K} = \left(e^{10K}\right)^2 = \left(\dfrac{5}{7}\right)^2 = \dfrac{25}{49}\), y \(70\cdot\dfrac{25}{49} = 35{,}71\). Bajó \(20\) °C en los primeros \(10\) minutos y \(14{,}3\) °C en los siguientes: cada vez más despacio.`,
+      r`\(50\) es \(80 - 30\), la diferencia con el ambiente a los \(10\) minutos. A los \(20\): \(e^{-0{,}672} \approx 0{,}511\), \(T(20) = 30 + 70\cdot 0{,}511 = 65{,}7\) °C.`,
+      r`Calculalo: \(e^{-0{,}0336\cdot 20} = e^{-0{,}672} \approx 0{,}511\), y \(T(20) = 30 + 70\cdot 0{,}511 = 30 + 35{,}7 = 65{,}7\) °C.`]}
+];
+
+/* Práctica: dos problemas hermanos; cada uno con sus ítems (todos autónomos) */
+const EJ = [
+ {id:'ej2', titulo:'La pieza del taller', enun:r`Una pieza de acero sale del horno del taller a \(200\) °C y se deja enfriar en un ambiente cuya temperatura es constante a \(20\) °C. A los \(5\) minutos la pieza está a \(140\) °C. Hallar la constante \(K\) de la Ley de enfriamiento de Newton y la temperatura de la pieza a los \(10\) minutos.`,
+  items:[
+   {id:'e2a', tipo:'mcq', grupo:'ej2', tt:'a) La ecuación', enun:r`¿Cuál es la ecuación diferencial de este problema?`,
+    opts:[r`\(\dfrac{dT}{dt} = K\,(T - 20)\)`, r`\(\dfrac{dT}{dt} = K\,(T - 200)\)`, r`\(\dfrac{dT}{dt} = K\cdot T\)`, r`\(\dfrac{dT}{dt} = K\,(T - 140)\)`], correct:0,
+    fb:[r`Correcto: la diferencia es con el ambiente, \(T - 20\). El \(200\) y el \(140\) son valores de \(T\) en instantes concretos.`, r`El \(200\) es la temperatura inicial de la pieza, no la del ambiente. La ley compara con el ambiente: \(T - 20\).`, r`La ley no dice "proporcional a la temperatura" sino a la <b>diferencia</b> con el ambiente: \(T - 20\). Con \(K\cdot T\) la pieza tendería a \(0\) °C.`, r`\(140\) es la temperatura a los \(5\) minutos, un valor de \(T\) en un instante. La constante que entra en la ecuación es la del ambiente, \(20\).`],
+    pistas:[r`¿Cuál de los tres números del enunciado es una temperatura <b>constante</b> durante todo el proceso?`, r`La diferencia es "temperatura del objeto menos temperatura del ambiente": \(T - 20\).`],
+    sol:r`<p>Traducimos: velocidad de cambio \(\to \dfrac{dT}{dt}\); diferencia con el ambiente \(\to T - 20\); proporcional \(\to K\cdot\). Queda \(\dfrac{dT}{dt} = K\,(T - 20)\), cuya solución general (separando e integrando como en el problema del apunte) es \(T(t) = 20 + A\,e^{K\,t}\).</p>`},
+   {id:'e2b', tipo:'num', grupo:'ej2', tt:'b) La constante A', enun:r`La solución general es \(T(t) = 20 + A\,e^{K\,t}\). Usando \(T(0) = 200\), ¿cuánto vale \(A\)?`, pre:r`\(A =\)`, resp:180, tol:0.01, unidad:'',
+    pistas:[r`En \(t = 0\): \(e^{K\cdot 0} = e^{0} = 1\).`, r`\(200 = 20 + A\cdot 1\). Despejá \(A\).`, r`\(A = 200 - 20\).`],
+    fbNum:[{v:200, t:r`Ese es \(T(0)\). Falta restar el ambiente: \(200 = 20 + A\), \(A = 180\).`}, {v:20, t:r`\(20\) es el ambiente, que ya está sumado aparte. \(A = 200 - 20 = 180\).`}, {v:120, t:r`\(120 = 140 - 20\) es la diferencia a los \(5\) minutos. Para \(A\) se usa \(t = 0\): \(A = 200 - 20 = 180\).`}, {v:-180, t:r`La pieza arranca arriba del ambiente: \(A = 200 - 20 = 180\), positivo.`}],
+    fbOk:r`\(A = 180\): la diferencia inicial con el ambiente.`, fbNo:r`\[200 = 20 + A\,e^{0} = 20 + A\cdot 1 = 20 + A \;\Rightarrow\; A = 200 - 20 = 180\]`,
+    sol:r`<p>\(t = 0\), \(T = 200\):</p>\[200 = 20 + A\,e^{K\cdot 0} = 20 + A\,e^{0} = 20 + A\cdot 1 = 20 + A \;\Rightarrow\; A = 200 - 20 = 180\]<p>Entonces \(T(t) = 20 + 180\,e^{K\,t}\).</p>`},
+   {id:'e2c', tipo:'mcq', grupo:'ej2', tt:'c) K exacto', enun:r`Con \(T(t) = 20 + 180\,e^{K\,t}\) y el dato \(T(5) = 140\), ¿cuál es la expresión exacta de \(K\)?`,
+    opts:[r`\(K = \dfrac{\ln\!\left(\dfrac{3}{2}\right)}{5}\)`, r`\(K = \dfrac{\ln\!\left(\dfrac{2}{3}\right)}{5}\)`, r`\(K = 5\,\ln\!\left(\dfrac{2}{3}\right)\)`, r`\(K = \dfrac{\ln\!\left(\dfrac{120}{200}\right)}{5}\)`], correct:1,
+    fb:[r`La fracción está invertida: \(140 - 20 = 120\) y \(\dfrac{120}{180} = \dfrac{2}{3}\). Con \(\ln\!\left(\dfrac{3}{2}\right) > 0\) saldría \(K > 0\): la pieza se calentaría. Control del signo.`, r`Correcto: \[140 - 20 = 180\,e^{5K} \;\Rightarrow\; \dfrac{120}{180} = \dfrac{2}{3} = e^{5K} \;\Rightarrow\; \ln\!\left(\dfrac{2}{3}\right) = 5K\] y el \(5\) pasa dividiendo.`, r`En \(\ln\!\left(\dfrac{2}{3}\right) = 5K\) el \(5\) multiplica a \(K\): pasa dividiendo, no multiplicando.`, r`Se dividió por \(200\) en vez de por \(180\): lo que multiplica a la exponencial es \(A = 180\). La razón es \(\dfrac{120}{180} = \dfrac{2}{3}\).`],
+    pistas:[r`Reemplazá \(t = 5\) y \(T = 140\): \(140 = 20 + 180\,e^{5K}\). Aislá la exponencial.`, r`\(120 = 180\,e^{5K}\), así que \(e^{5K} = \dfrac{120}{180}\). Simplificá por \(60\).`, r`\(e^{5K} = \dfrac{2}{3}\). Aplicá \(\ln\) a los dos lados y después dividí por \(5\).`],
+    sol:r`<p>\(t = 5\), \(T = 140\):</p>\[140 = 20 + 180\,e^{5K} \;\Rightarrow\; 140 - 20 = 180\,e^{5K} \;\Rightarrow\; 120 = 180\,e^{5K} \;\Rightarrow\; \dfrac{120}{180} = e^{5K} \;\Rightarrow\; \dfrac{2}{3} = e^{5K}\]<p>(simplificamos la fracción dividiendo por \(60\).) Aplicamos logaritmo natural a los dos lados:</p>\[\ln\!\left(\dfrac{2}{3}\right) = \ln\!\left(e^{5K}\right) = 5K \;\Rightarrow\; K = \dfrac{\ln\!\left(\dfrac{2}{3}\right)}{5}\]`},
+   {id:'e2d', tipo:'num', grupo:'ej2', tt:'d) K numérico', enun:r`Calculá \(K = \dfrac{\ln\left(\frac{2}{3}\right)}{5}\) con cuatro decimales.`, pre:r`\(K \approx\)`, resp:-0.08109, tol:0.0006, unidad:'por minuto',
+    pistas:[r`\(\dfrac{2}{3} \approx 0{,}6667\). Calculá su logaritmo natural.`, r`\(\ln(0{,}6667) \approx -0{,}4055\). Negativo, porque \(\dfrac{2}{3} < 1\).`, r`Dividí por \(5\): \(\dfrac{-0{,}4055}{5}\).`],
+    fbNum:[{v:0.0811, t:r`Falta el signo: \(\ln\!\left(\dfrac{2}{3}\right) < 0\). \(K \approx -0{,}0811\).`}, {v:-0.4055, t:r`Ese es \(\ln\!\left(\dfrac{2}{3}\right)\) sin dividir por \(5\): \(K = \dfrac{-0{,}4055}{5} \approx -0{,}0811\).`}, {v:-2.027, t:r`Multiplicaste por \(5\) en vez de dividir: \(K = \dfrac{-0{,}4055}{5} \approx -0{,}0811\).`}],
+    fbOk:r`\(K \approx -0{,}0811\) por minuto. Negativo: la pieza se enfría.`, fbNo:r`\(\ln\!\left(\dfrac{2}{3}\right) = \ln(0{,}6667) \approx -0{,}4055\); dividido por \(5\): \(K \approx -0{,}0811\) por minuto.`,
+    sol:r`<p>\(\dfrac{2}{3} = 0{,}66667\) · \(\ln(0{,}66667) = -0{,}40547\) · \(K = \dfrac{-0{,}40547}{5} = -0{,}081094 \approx -0{,}0811\) por minuto. Más negativo que en el problema del apunte (\(-0{,}0336\)): esta pieza intercambia calor más rápido.</p>`},
+   {id:'e2e', tipo:'mcq', grupo:'ej2', tt:'e) Predecir y controlar', enun:r`Con \(T(t) = 20 + 180\,e^{K\,t}\) y \(e^{5K} = \dfrac{2}{3}\), ¿qué temperatura tiene la pieza a los \(10\) minutos?`,
+    opts:[r`\(80\) °C, porque bajó \(60\) °C en \(5\) minutos y vuelve a bajar \(60\).`, r`\(60\) °C`, r`\(110\) °C`, r`\(100\) °C`], correct:3,
+    fb:[r`El enfriamiento no es lineal: cuanto más cerca del ambiente, más lento. \(e^{10K} = \left(e^{5K}\right)^2 = \left(\dfrac{2}{3}\right)^2 = \dfrac{4}{9}\), y \(T(10) = 20 + 180\cdot\dfrac{4}{9} = 20 + \dfrac{720}{9} = 20 + 80 = 100\) °C.`, r`\(60\) es \(180\cdot\dfrac{1}{3}\): no corresponde a ningún instante del problema. A los \(10\) minutos: \(e^{10K} = \left(\dfrac{2}{3}\right)^2 = \dfrac{4}{9}\), \(T(10) = 20 + 180\cdot\dfrac{4}{9} = 20 + 80 = 100\) °C.`, r`\(110\) saldría de restar solo \(30\) °C en los segundos \(5\) minutos. La cuenta exacta: \(T(10) = 20 + 180\cdot\left(\dfrac{2}{3}\right)^2 = 20 + 180\cdot\dfrac{4}{9} = 20 + 80 = 100\) °C.`, r`Correcto: \(e^{10K} = \left(e^{5K}\right)^2 = \left(\dfrac{2}{3}\right)^2 = \dfrac{4}{9}\), así que \(T(10) = 20 + 180\cdot\dfrac{4}{9} = 20 + \dfrac{720}{9} = 20 + 80 = 100\) °C. Bajó \(60\) °C en los primeros \(5\) minutos y \(40\) °C en los siguientes.`],
+    pistas:[r`\(e^{10K} = e^{5K\cdot 2} = \left(e^{5K}\right)^2\). Y ya sabés cuánto vale \(e^{5K}\).`, r`\(\left(\dfrac{2}{3}\right)^2 = \dfrac{4}{9}\). Multiplicá por \(180\) y sumá \(20\).`],
+    sol:r`<p>\(e^{10K} = \left(e^{5K}\right)^2 = \left(\dfrac{2}{3}\right)^2 = \dfrac{4}{9}\)</p>\[T(10) = 20 + 180\,e^{10K} = 20 + 180\cdot\dfrac{4}{9} = 20 + \dfrac{720}{9} = 20 + 80 = 100\ \text{°C}\]<p>Controles: \(T(0) = 20 + 180\cdot 1 = 200\) ✓; \(T(5) = 20 + 180\cdot\dfrac{2}{3} = 20 + 120 = 140\) ✓; \(K < 0\) ✓. En los primeros \(5\) minutos bajó \(60\) °C, en los siguientes \(40\) °C: se enfría cada vez más despacio.</p>`}
+  ]},
+ {id:'ej3', titulo:'El agua del mate', enun:r`El agua para el mate está a \(85\) °C cuando la pava queda sobre la mesada de la cocina, a una temperatura ambiente constante de \(25\) °C. A los \(15\) minutos el agua está a \(55\) °C. Hallar la constante \(K\) de la Ley de enfriamiento de Newton y la temperatura del agua a los \(30\) minutos.`,
+  items:[
+   {id:'e3a', tipo:'mcq', grupo:'ej3', tt:'a) La ecuación', enun:r`¿Cuál es la ecuación diferencial de este problema?`,
+    opts:[r`\(\dfrac{dT}{dt} = K\,(T - 85)\)`, r`\(\dfrac{dT}{dt} = K\,(T - 55)\)`, r`\(\dfrac{dT}{dt} = K\cdot T\)`, r`\(\dfrac{dT}{dt} = K\,(T - 25)\)`], correct:3,
+    fb:[r`El \(85\) es la temperatura inicial del agua. La ley compara con el ambiente, que es la cocina: \(T - 25\).`, r`\(55\) es la temperatura a los \(15\) minutos, un valor de \(T\) en un instante. La constante del ambiente es \(25\).`, r`La ley habla de la <b>diferencia</b> con el ambiente, no de la temperatura sola: \(T - 25\).`, r`Correcto: la única constante que entra en la ecuación es la del ambiente, \(25\). Los otros dos números son valores de \(T\) en \(t = 0\) y en \(t = 15\).`],
+    pistas:[r`¿Cuál de los tres números es una temperatura <b>constante</b> durante todo el proceso?`, r`"Diferencia entre su temperatura y la del ambiente": \(T - 25\).`],
+    sol:r`<p>Velocidad de cambio \(\to \dfrac{dT}{dt}\); diferencia con el ambiente \(\to T - 25\); proporcional \(\to K\cdot\). Queda \(\dfrac{dT}{dt} = K\,(T - 25)\), con solución general \(T(t) = 25 + A\,e^{K\,t}\).</p>`},
+   {id:'e3b', tipo:'num', grupo:'ej3', tt:'b) La constante A', enun:r`La solución general es \(T(t) = 25 + A\,e^{K\,t}\). Usando \(T(0) = 85\), ¿cuánto vale \(A\)?`, pre:r`\(A =\)`, resp:60, tol:0.01, unidad:'',
+    pistas:[r`En \(t = 0\), \(e^{0} = 1\) y \(K\) desaparece.`, r`\(85 = 25 + A\cdot 1\).`, r`\(A = 85 - 25\).`],
+    fbNum:[{v:85, t:r`Ese es \(T(0)\). Falta restar el ambiente: \(85 = 25 + A\), \(A = 60\).`}, {v:25, t:r`\(25\) es el ambiente. \(A\) multiplica a la exponencial: \(A = 85 - 25 = 60\).`}, {v:30, t:r`\(30 = 55 - 25\) es la diferencia a los \(15\) minutos. Para \(A\) se usa \(t = 0\): \(A = 85 - 25 = 60\).`}, {v:-60, t:r`El agua arranca arriba del ambiente: \(A = 85 - 25 = 60\), positivo.`}],
+    fbOk:r`\(A = 60\): la diferencia inicial con el ambiente.`, fbNo:r`\[85 = 25 + A\,e^{0} = 25 + A\cdot 1 = 25 + A \;\Rightarrow\; A = 85 - 25 = 60\]`,
+    sol:r`<p>\(t = 0\), \(T = 85\):</p>\[85 = 25 + A\,e^{K\cdot 0} = 25 + A\,e^{0} = 25 + A\cdot 1 = 25 + A \;\Rightarrow\; A = 85 - 25 = 60\]<p>Entonces \(T(t) = 25 + 60\,e^{K\,t}\).</p>`},
+   {id:'e3c', tipo:'mcq', grupo:'ej3', tt:'c) K exacto', enun:r`Con \(T(t) = 25 + 60\,e^{K\,t}\) y el dato \(T(15) = 55\), ¿cuál es la expresión exacta de \(K\)?`,
+    opts:[r`\(K = \dfrac{\ln\!\left(\dfrac{1}{2}\right)}{15} = -\dfrac{\ln 2}{15}\)`, r`\(K = \dfrac{\ln 2}{15}\)`, r`\(K = 15\,\ln\!\left(\dfrac{1}{2}\right)\)`, r`\(K = \dfrac{\ln\!\left(\dfrac{55}{85}\right)}{15}\)`], correct:0,
+    fb:[r`Correcto: \[55 - 25 = 60\,e^{15K} \;\Rightarrow\; \dfrac{30}{60} = \dfrac{1}{2} = e^{15K} \;\Rightarrow\; \ln\!\left(\dfrac{1}{2}\right) = 15K\] Y \(\ln\!\left(\dfrac{1}{2}\right) = -\ln 2\): a los \(15\) minutos la diferencia con el ambiente se redujo exactamente a la mitad.`, r`Le falta el signo: \(e^{15K} = \dfrac{1}{2}\) y \(\ln\!\left(\dfrac{1}{2}\right) = -\ln 2 < 0\). Con \(K > 0\) el agua se calentaría sola.`, r`En \(\ln\!\left(\dfrac{1}{2}\right) = 15K\) el \(15\) multiplica a \(K\): pasa dividiendo.`, r`Se usaron las temperaturas sin restar el ambiente. Hay que aislar la exponencial: \(55 - 25 = 60\,e^{15K}\), \(\dfrac{30}{60} = \dfrac{1}{2}\).`],
+    pistas:[r`Reemplazá \(t = 15\), \(T = 55\): \(55 = 25 + 60\,e^{15K}\). Aislá la exponencial.`, r`\(30 = 60\,e^{15K}\), así que \(e^{15K} = \dfrac{30}{60} = \dfrac{1}{2}\).`, r`\(\ln\!\left(\dfrac{1}{2}\right) = 15K\). Dividí por \(15\). Recordá que \(\ln\!\left(\dfrac{1}{2}\right) = -\ln 2\).`],
+    sol:r`<p>\(t = 15\), \(T = 55\):</p>\[55 = 25 + 60\,e^{15K} \;\Rightarrow\; 55 - 25 = 60\,e^{15K} \;\Rightarrow\; 30 = 60\,e^{15K} \;\Rightarrow\; \dfrac{30}{60} = e^{15K} \;\Rightarrow\; \dfrac{1}{2} = e^{15K}\]<p>Aplicamos logaritmo natural:</p>\[\ln\!\left(\dfrac{1}{2}\right) = 15K \;\Rightarrow\; K = \dfrac{\ln\!\left(\dfrac{1}{2}\right)}{15} = -\dfrac{\ln 2}{15}\]`},
+   {id:'e3d', tipo:'num', grupo:'ej3', tt:'d) K numérico', enun:r`Calculá \(K = -\dfrac{\ln 2}{15}\) con cuatro decimales.`, pre:r`\(K \approx\)`, resp:-0.04621, tol:0.0006, unidad:'por minuto',
+    pistas:[r`\(\ln 2 \approx 0{,}6931\).`, r`\(-\dfrac{0{,}6931}{15}\).`],
+    fbNum:[{v:0.0462, t:r`Falta el signo: \(\ln\!\left(\dfrac{1}{2}\right) = -\ln 2 < 0\). \(K \approx -0{,}0462\).`}, {v:-0.6931, t:r`Ese es \(-\ln 2\) sin dividir por \(15\): \(K = \dfrac{-0{,}6931}{15} \approx -0{,}0462\).`}, {v:-10.397, t:r`Multiplicaste por \(15\) en vez de dividir: \(K = \dfrac{-0{,}6931}{15} \approx -0{,}0462\).`}],
+    fbOk:r`\(K \approx -0{,}0462\) por minuto. Negativo: el agua se enfría.`, fbNo:r`\(\ln 2 \approx 0{,}6931\); \(K = \dfrac{-0{,}6931}{15} \approx -0{,}0462\) por minuto.`,
+    sol:r`<p>\(\ln 2 = 0{,}69315\) · \(K = \dfrac{-0{,}69315}{15} = -0{,}046210 \approx -0{,}0462\) por minuto.</p>`},
+   {id:'e3e', tipo:'mcq', grupo:'ej3', tt:'e) Predecir y controlar', enun:r`Con \(T(t) = 25 + 60\,e^{K\,t}\) y \(e^{15K} = \dfrac{1}{2}\), ¿qué temperatura tiene el agua a los \(30\) minutos?`,
+    opts:[r`\(25\) °C: ya llegó al ambiente.`, r`\(27{,}5\) °C`, r`\(40\) °C`, r`\(32{,}5\) °C`], correct:2,
+    fb:[r`Nunca llega del todo: \(e^{30K} = \left(\dfrac{1}{2}\right)^2 = \dfrac{1}{4} \ne 0\). \(T(30) = 25 + 60\cdot\dfrac{1}{4} = 25 + 15 = 40\) °C. Al ambiente se acerca, pero no lo alcanza en tiempo finito.`, r`\(27{,}5\) saldría con una diferencia de \(2{,}5\) °C. La diferencia a los \(30\) minutos es \(60\cdot\left(\dfrac{1}{2}\right)^2 = 60\cdot\dfrac{1}{4} = 15\): \(T(30) = 25 + 15 = 40\) °C.`, r`Correcto: \(e^{30K} = \left(e^{15K}\right)^2 = \left(\dfrac{1}{2}\right)^2 = \dfrac{1}{4}\), así que \(T(30) = 25 + 60\cdot\dfrac{1}{4} = 25 + 15 = 40\) °C. Cada \(15\) minutos la diferencia con el ambiente se parte por la mitad: \(60 \to 30 \to 15\).`, r`\(32{,}5\) tendría diferencia \(7{,}5\), que es la de los \(45\) minutos (\(60 \to 30 \to 15 \to 7{,}5\)). A los \(30\): \(T(30) = 25 + 60\cdot\dfrac{1}{4} = 25 + 15 = 40\) °C.`],
+    pistas:[r`\(e^{30K} = \left(e^{15K}\right)^2\). Y \(e^{15K} = \dfrac{1}{2}\).`, r`\(\left(\dfrac{1}{2}\right)^2 = \dfrac{1}{4}\). Multiplicá por \(60\) y sumá \(25\).`],
+    sol:r`<p>\(e^{30K} = \left(e^{15K}\right)^2 = \left(\dfrac{1}{2}\right)^2 = \dfrac{1}{4}\)</p>\[T(30) = 25 + 60\,e^{30K} = 25 + 60\cdot\dfrac{1}{4} = 25 + \dfrac{60}{4} = 25 + 15 = 40\ \text{°C}\]<p>Controles: \(T(0) = 25 + 60\cdot 1 = 85\) ✓; \(T(15) = 25 + 60\cdot\dfrac{1}{2} = 25 + 30 = 55\) ✓; \(K < 0\) ✓. La diferencia con el ambiente se reduce a la mitad cada \(15\) minutos: \(60\), \(30\), \(15\), \(7{,}5\)…</p>`}
+  ]}
+];
+const ALL = ITEMS.concat(...EJ.map(e => e.items));
+const byId = id => ALL.find(x => x.id===id);
+
+/* ===================== ESTADO ===================== */
+const STORE_KEY = 'philips_u5_newton_enfriamiento_v1';
+const ST = {
+  stage:0, unlocked:0,
+  q:{},            // id → índice elegido (mcq)
+  num:{},          // id → {val, ok, intentos}
+  pistas:{},       // id → cantidad pedida
+  trad:{},         // fila → índice elegido
+  lab:{K:-0.06},
+  meta:'', nombre:'', curso:''
+};
+function guardar(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(ST)); } catch(_){} }
+function cargar(){ try { const s = localStorage.getItem(STORE_KEY); if (s){ deepMerge(ST, JSON.parse(s)); } } catch(_){} }
+function deepMerge(a, b){ for (const k in b){ if (b[k] && typeof b[k]==='object' && !Array.isArray(b[k]) && a[k] && typeof a[k]==='object') deepMerge(a[k], b[k]); else a[k] = b[k]; } }
+
+/* ===================== NAVEGACIÓN ===================== */
+const PANT = ['Inicio','La ley','Plantear','Resolver','Constantes','Práctica','Cierre'];
+const PANT_C = ['Inicio','Ley','Plantear','Resolver','A y K','Práctica','Cierre'];
+function renderPills(){
+  $('#pills').innerHTML = PANT.map((p,i) => `<button type="button" class="pill${i===ST.stage?' active':''}${i<ST.unlocked?' done':''}" data-go="${i}" title="${p}"><span class="n">${i}</span><span class="lbl">${p}</span><span class="lbl-c">${PANT_C[i]}</span></button>`).join('');
+  $('#progBar').style.width = (ST.stage/(PANT.length-1)*100) + '%';
+  $('#progTxt').textContent = `Pantalla ${ST.stage} · ${PANT[ST.stage]}`;
+}
+function ir(k, silencioso){
+  k = +k; if (isNaN(k) || k<0 || k>6) return;
+  ST.stage = k; if (k > ST.unlocked) ST.unlocked = k;
+  for (let i=0;i<7;i++){ const el = $('#s'+i); el.classList.toggle('sec-visible', i===k); el.classList.toggle('sec-hidden', i!==k); }
+  renderPills();
+  if (k===4) drawLab();
+  if (k===6) renderReporte();
+  autoGrowAll();
+  if (!silencioso){ guardar(); const sec = $('#s'+k); if (sec.scrollIntoView) sec.scrollIntoView({block:'start', behavior:'instant'}); }
+}
+window.ir = ir;
+
+/* ===================== UTILIDADES ===================== */
+const fmt = (v, d) => { const p = Math.pow(10, d===undefined?2:d); const s = (Math.round(v*p)/p).toString().replace('.', ','); return s.replace('-', '−'); };
+const fmtTex = (v, d) => { const p = Math.pow(10, d===undefined?2:d); return (Math.round(v*p)/p).toString().replace('.', '{,}'); };
+function autoGrowAll(){ $$('textarea').forEach(t => { t.style.height = 'auto'; t.style.height = (t.scrollHeight + 2) + 'px'; }); }
+function parseNum(s){ s = String(s).trim().replace(/−/g,'-').replace(/\s+/g,'').replace(',', '.'); if (!/^[-+]?\d*\.?\d+$/.test(s)) return NaN; return parseFloat(s); }
+
+function htmlItem(it){
+  const pistasBtn = it.pistas ? `<button type="button" class="btn small ghost" data-pista>Pista <span data-pn>1</span> de ${it.pistas.length}</button>` : '';
+  const solBtn = it.sol ? `<button type="button" class="btn small sec" data-sol disabled>Ver resolución</button>` : '';
+  const acciones = (pistasBtn || solBtn) ? `<div class="acciones">${pistasBtn}${solBtn}<span class="estado" data-estado>sin responder</span></div><div data-pistas></div>${it.sol ? `<div class="solucion" data-solucion style="display:none">${it.sol}</div>` : ''}` : '';
+  if (it.tipo==='mcq'){
+    return `<div class="act${it.gate?' gate':''}" data-q="${it.id}"><div class="tt">${it.tt}</div><div class="q">${it.enun}</div><div class="opts">${it.opts.map((o,j) => `<button type="button" class="opt" data-j="${j}"><span class="k">${'ABCD'[j]}</span><span>${o}</span></button>`).join('')}</div><div class="fb" data-fbq></div>${it.reveal ? `<div class="reveal" data-reveal>${it.reveal}</div>` : ''}${acciones}</div>`;
+  }
+  return `<div class="act" data-n="${it.id}"><div class="tt">${it.tt}</div><div class="q">${it.enun}</div><div class="numrow"><span class="pre">${it.pre}</span><input type="text" class="num" inputmode="decimal" autocomplete="off" data-in placeholder="…">${it.unidad ? `<span>${it.unidad}</span>` : ''}<button type="button" class="btn small" data-check>Comprobar</button></div><div class="fb" data-fbq></div>${acciones}`;
+}
+function renderItems(){
+  const put = (sel, ids) => { const el = $(sel); if (!el) return; el.innerHTML = ids.map(id => htmlItem(byId(id))).join(''); tex(el); };
+  put('#leyQ', ['q_signo']);
+  put('#planQ1', ['q_ec']); put('#planQ2', ['q_porque']);
+  put('#resQ1', ['r_sep']); put('#resQ2', ['r_int']); put('#resQ3', ['r_abs']); put('#resQ4', ['r_desp']);
+  put('#numA', ['n_A']); put('#kQ1', ['q_Kex']); put('#numK', ['n_K']); put('#kQ2', ['q_pred']);
+  $('#listaEj').innerHTML = EJ.map((e,i) => `
+    <article class="ej" data-ej="${e.id}">
+      <div class="ej-head"><div class="ej-num">Problema ${i+2}</div><div class="ej-lab"><span class="bullet"></span><span class="lab">laboratorio</span><span class="best">best</span><span class="ia">-IA</span></div></div>
+      <div class="ej-body">
+        <div class="titulo">${e.titulo}</div>
+        <div class="enun">${e.enun}</div>
+        ${e.items.map(htmlItem).join('')}
+      </div>
+    </article>`).join('');
+  tex($('#listaEj'));
+  actualizarProgreso();
+}
+function gatesAbiertas(){
+  const nA = ST.num.n_A, nK = ST.num.n_K;
+  return { gLey: Object.keys(ST.trad).length===3, gA: !!(nA && nA.intentos>0), gK: !!(ST.q.q_Kex!==undefined && nK && nK.intentos>0) };
+}
+function actualizarGates(){
+  const g = gatesAbiertas();
+  Object.entries(g).forEach(([id, abierta]) => { const ph = $('#'+id); if (ph) ph.classList.toggle('open', abierta); $$(`.gated-box[data-gate="${id}"]`).forEach(b => { const era = b.classList.contains('open'); b.classList.toggle('open', abierta); if (abierta && !era) tex(b); }); });
+  if (g.gA) drawLab();
+}
+function setEstado(box, txt, color){ const est = $('[data-estado]', box); if (est){ est.textContent = txt; est.style.color = color||''; } }
+function habilitarSol(box){ const b = $('[data-sol]', box); if (b) b.disabled = false; }
+
+/* MCQ */
+function responderQ(box, j, silencioso){
+  const q = byId(box.dataset.q); if (!q || ST.q[q.id]!==undefined) return;
+  ST.q[q.id] = j;
+  const ok = j===q.correct;
+  $$('.opt', box).forEach((b,k) => { b.disabled = true; b.classList.add(k===q.correct ? 'right' : (k===j ? 'wrong' : 'dim')); });
+  const fb = $('[data-fbq]', box); fb.className = 'fb show ' + (ok ? 'good' : 'bad'); fb.innerHTML = (ok ? '<b>Correcto.</b> ' : '<b>No es esa.</b> ') + q.fb[j]; tex(fb);
+  const rv = $('[data-reveal]', box); if (rv){ rv.classList.add('show'); tex(rv); }
+  setEstado(box, ok ? 'correcto ✓' : 'revisar', ok ? 'var(--green)' : 'var(--rust)');
+  habilitarSol(box);
+  actualizarProgreso(); actualizarGates();
+  if (!silencioso) guardar();
+}
+/* Numérico */
+function comprobarNum(box, silencioso){
+  const it = byId(box.dataset.n); if (!it) return;
+  const st = ST.num[it.id] || (ST.num[it.id] = {val:null, ok:false, intentos:0});
+  if (st.ok) return;
+  const inp = $('[data-in]', box); const v = parseNum(inp.value);
+  const fb = $('[data-fbq]', box);
+  if (isNaN(v)){ fb.className = 'fb show info'; fb.textContent = 'Escribí un número (con coma para los decimales, por ejemplo −0,0336).'; return; }
+  st.intentos++; st.val = inp.value;
+  const ok = Math.abs(v - it.resp) <= it.tol;
+  inp.classList.remove('right','wrong'); inp.classList.add(ok ? 'right' : 'wrong');
+  if (ok){
+    st.ok = true; inp.disabled = true; $('[data-check]', box).disabled = true;
+    fb.className = 'fb show good'; fb.innerHTML = (st.intentos===1 ? '<b>Correcto.</b> ' : `<b>Correcto en el intento ${st.intentos}.</b> `) + it.fbOk;
+    setEstado(box, st.intentos===1 ? 'correcto ✓' : `correcto ✓ (${st.intentos} intentos)`, 'var(--green)');
+  } else {
+    const esp = (it.fbNum||[]).find(f => Math.abs(v - f.v) <= Math.max(it.tol*2, Math.abs(f.v)*0.01));
+    fb.className = 'fb show bad'; fb.innerHTML = '<b>No es ese.</b> ' + (esp ? esp.t : it.fbNo) + ' <i>Podés volver a intentar.</i>';
+    setEstado(box, `revisar (${st.intentos} ${st.intentos===1?'intento':'intentos'})`, 'var(--rust)');
+  }
+  tex(fb); habilitarSol(box); actualizarProgreso(); actualizarGates();
+  if (!silencioso) guardar();
+}
+/* Pistas */
+function pista(box, silencioso){
+  const it = byId(box.dataset.q || box.dataset.n); if (!it || !it.pistas) return;
+  const cont = $('[data-pistas]', box); const n = cont.children.length;
+  if (n >= it.pistas.length) return;
+  const d = document.createElement('div'); d.className = 'pista';
+  d.innerHTML = `<div class="tt">Pista ${n+1}</div>${it.pistas[n]}`;
+  cont.appendChild(d); tex(d);
+  const btn = $('[data-pista]', box);
+  if (n+1 >= it.pistas.length){ btn.disabled = true; btn.textContent = 'Sin más pistas'; } else $('[data-pn]', btn).textContent = n+2;
+  ST.pistas[it.id] = n+1;
+  if (!silencioso) guardar();
+}
+
+/* ===================== TRADUCTOR ===================== */
+function elegirTrad(row, c, silencioso){
+  if (ST.trad[row]!==undefined) return;
+  ST.trad[row] = c;
+  const tr = TRAD[row], ok = c===tr.correct;
+  const rowEl = $(`.trad-row[data-row="${row}"]`);
+  $$('.chip', rowEl).forEach((ch,k) => { ch.disabled = true; if (k===tr.correct) ch.classList.add('right'); else if (k===c) ch.classList.add('wrong'); else ch.style.opacity = .55; });
+  const d = document.createElement('div'); d.className = 'fb show ' + (ok ? 'good' : 'bad'); d.style.gridColumn = '1 / -1'; d.style.marginTop = '0';
+  d.innerHTML = (ok ? '<b>Sí.</b> ' + tr.ok : '<b>No es ese.</b> ' + tr.no[c]); rowEl.appendChild(d); tex(d);
+  if (Object.keys(ST.trad).length===3){
+    const res = $('#tradRes'); const aciertos = [0,1,2].filter(i => ST.trad[i]===TRAD[i].correct).length;
+    res.innerHTML = `<div class="fb show info"><b>${aciertos===3 ? 'Las tres piezas en su lugar.' : aciertos + ' de 3 piezas en su lugar.'}</b> Juntando los tres pedazos de la frase, la ley queda escrita como una ecuación diferencial: \\[\\dfrac{dT}{dt} = K\\,(T - T_a)\\]</div>`; tex(res);
+  }
+  actualizarProgreso(); actualizarGates();
+  if (!silencioso) guardar();
+}
+
+/* ===================== LABORATORIO ===================== */
+function escala(a, b){
+  const bruto = (b - a)/5, e = Math.pow(10, Math.floor(Math.log10(bruto))), rr = bruto/e;
+  const paso = (rr < 1.5 ? 1 : rr < 3 ? 2 : rr < 7 ? 5 : 10) * e;
+  const out = [];
+  for (let v = Math.ceil(a/paso)*paso; v <= b + paso*1e-9; v += paso) out.push(Math.abs(v) < paso*1e-9 ? 0 : v);
+  return out;
+}
+function ejes(ctx, W, H, T0, T1, V0, V1, xlab, ylab, dec){
+  const Lm = 62, Rm = 22, Tm = 28, Bm = 46;
+  const X = t => Lm + (t - T0)/(T1 - T0)*(W - Lm - Rm);
+  const Y = v => Tm + (V1 - v)/(V1 - V0)*(H - Tm - Bm);
+  ctx.clearRect(0,0,W,H);
+  ctx.font = '12px "Fira Code", monospace'; ctx.fillStyle = '#5f5b53';
+  escala(V0, V1).forEach(v => { ctx.strokeStyle = v===0 ? '#c9c2b4' : '#efeade'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(Lm, Y(v)); ctx.lineTo(W-Rm, Y(v)); ctx.stroke(); ctx.textAlign = 'right'; ctx.fillText(fmt(v, dec||0), Lm-6, Y(v)+4); });
+  escala(T0, T1).forEach(t => { ctx.strokeStyle = '#efeade'; ctx.beginPath(); ctx.moveTo(X(t), Tm); ctx.lineTo(X(t), H-Bm); ctx.stroke(); ctx.textAlign = 'center'; ctx.fillText(fmt(t, 0), X(t), H-Bm+16); });
+  ctx.strokeStyle = '#8a8478'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(Lm, H-Bm); ctx.lineTo(W-Rm, H-Bm); ctx.moveTo(Lm, Tm); ctx.lineTo(Lm, H-Bm); ctx.stroke();
+  ctx.textAlign = 'center'; ctx.fillText(xlab, (Lm + W - Rm)/2, H-6);
+  ctx.textAlign = 'left'; ctx.fillText(ylab, 6, Tm-10);
+  return {X, Y, Lm, Rm, Tm, Bm};
+}
+function drawLab(){
+  const cv = $('#labCanvas'); if (!cv) return;
+  const K = ST.lab.K;
+  const f = t => 30 + 70*Math.exp(K*t);
+  const T10 = f(10), dif = T10 - 80, hit = Math.abs(dif) < 0.35;
+  $('#slKv').textContent = 'K = ' + fmt(K, 4) + ' por minuto';
+  $('#labFormula').innerHTML = r`\[T(t) = 30 + 70\,e^{` + fmtTex(K,4) + r`\,t}\]`; tex($('#labFormula'));
+  const ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+  const {X, Y, Lm, Rm, Tm, Bm} = ejes(ctx, W, H, 0, 60, 0, 110, 't · minutos', 'T · °C');
+  // ambiente
+  ctx.setLineDash([6,4]); ctx.strokeStyle = '#C77A40'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(Lm, Y(30)); ctx.lineTo(W-Rm, Y(30)); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle = '#C77A40'; ctx.font = '600 12px "Hanken Grotesk", sans-serif'; ctx.textAlign = 'right'; ctx.fillText('ambiente · 30 °C', W-Rm-4, Y(30)-5);
+  // curva
+  ctx.strokeStyle = hit ? '#45785A' : '#2B5A93'; ctx.lineWidth = 2.6; ctx.beginPath();
+  for (let i=0;i<=400;i++){ const t = 60*i/400; const v = f(t); if (i===0) ctx.moveTo(X(t),Y(v)); else ctx.lineTo(X(t),Y(v)); }
+  ctx.stroke();
+  // guía vertical en t = 10
+  ctx.setLineDash([2,4]); ctx.strokeStyle = '#8a8478'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(X(10), H-Bm); ctx.lineTo(X(10), Y(100)); ctx.stroke(); ctx.setLineDash([]);
+  // punto de la curva en t = 10
+  ctx.fillStyle = hit ? '#45785A' : '#2B5A93'; ctx.beginPath(); ctx.arc(X(10), Y(T10), 5, 0, Math.PI*2); ctx.fill();
+  // datos
+  const dato = (t, T, txt, der) => { ctx.strokeStyle = '#BC5235'; ctx.lineWidth = 2; ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(X(t), Y(T), 6, 0, Math.PI*2); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#BC5235'; ctx.textAlign = der ? 'left' : 'left'; ctx.fillText(txt, X(t)+10, Y(T)+(der?-8:4)); };
+  dato(0, 100, '(0 ; 100) · dato', false);
+  dato(10, 80, '(10 ; 80) · la curva tiene que pasar por acá', true);
+  const st = $('#labStatus'); st.classList.toggle('hit', hit);
+  let txt = `<b>Con este K:</b> \\[T(10) = 30 + 70\\,e^{${fmtTex(K,4)}\\cdot 10} = 30 + 70\\,e^{${fmtTex(K*10,3)}} = 30 + 70\\cdot ${fmtTex(Math.exp(K*10),3)} = 30 + ${fmtTex(70*Math.exp(K*10),1)} = ${fmtTex(T10,1)}\\ \\text{°C}\\] `;
+  if (hit) txt += `<b>Pasa por el punto.</b> Con \\(K \\approx ${fmtTex(K,4)}\\) la curva da \\(80\\) °C a los \\(10\\) minutos. A ojo ya lo tenés; abajo lo calculás exacto y vas a ver que da \\(-0{,}0336\\).`;
+  else if (dif > 0) txt += `Le sobran \\(${fmtTex(dif,1)}\\) °C: a los \\(10\\) minutos la curva está <b>arriba</b> de \\(80\\). Se enfría demasiado despacio. Probá un \\(K\\) más alejado de cero, por ejemplo \\(-0{,}05\\).`;
+  else txt += `Le faltan \\(${fmtTex(-dif,1)}\\) °C: a los \\(10\\) minutos la curva está <b>abajo</b> de \\(80\\). Se enfría demasiado rápido. Probá un \\(K\\) más cerca de cero, por ejemplo \\(-0{,}02\\).`;
+  st.innerHTML = txt; tex(st);
+}
+
+/* ===================== PROGRESO Y REPORTE ===================== */
+const esc = s => String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function cuenta(grupo){
+  const its = ALL.filter(i => i.grupo===grupo);
+  const ok = its.filter(i => i.tipo==='mcq' ? ST.q[i.id]===i.correct : (ST.num[i.id] && ST.num[i.id].ok)).length;
+  const resp = its.filter(i => i.tipo==='mcq' ? ST.q[i.id]!==undefined : (ST.num[i.id] && ST.num[i.id].intentos>0)).length;
+  return {ok, resp, tot: its.length};
+}
+function tradOk(){ return [0,1,2].filter(i => ST.trad[i]===TRAD[i].correct).length; }
+function actualizarProgreso(){
+  const el = $('#progreso'); if (!el) return;
+  const a = cuenta('ej2'), b = cuenta('ej3');
+  el.innerHTML = `Problema 2: <b>${a.ok}</b> de ${a.tot} · Problema 3: <b>${b.ok}</b> de ${b.tot}`;
+}
+function datosReporte(){
+  const pistasN = Object.values(ST.pistas).reduce((s,v)=>s+v,0);
+  const intentosN = Object.values(ST.num).reduce((s,v)=>s+(v.intentos||0),0);
+  return {trad: tradOk(), ley: cuenta('ley'), plan: cuenta('plantear'), res: cuenta('resolver'), con: cuenta('constantes'), ej2: cuenta('ej2'), ej3: cuenta('ej3'), pistasN, intentosN};
+}
+function renderReporte(){
+  const d = datosReporte();
+  $('#repNombre').value = ST.nombre||''; $('#repCurso').value = ST.curso||''; $('#metaTxt').value = ST.meta||'';
+  $('#repGrid').innerHTML = `
+    <div class="rep-box"><div class="k">La ley</div><div class="v">${d.trad + d.ley.ok} de ${3 + d.ley.tot}</div><div class="d">traducción ${d.trad} de 3 · signo de K ${d.ley.ok} de ${d.ley.tot}</div></div>
+    <div class="rep-box"><div class="k">Plantear</div><div class="v">${d.plan.ok} de ${d.plan.tot}</div><div class="d">${d.plan.resp} respondidas</div></div>
+    <div class="rep-box"><div class="k">Resolver</div><div class="v">${d.res.ok} de ${d.res.tot}</div><div class="d">pasos anticipados</div></div>
+    <div class="rep-box"><div class="k">Las constantes</div><div class="v">${d.con.ok} de ${d.con.tot}</div><div class="d">A, K exacto, K numérico, predicción</div></div>
+    <div class="rep-box"><div class="k">Problema 2</div><div class="v">${d.ej2.ok} de ${d.ej2.tot}</div><div class="d">la pieza del taller</div></div>
+    <div class="rep-box"><div class="k">Problema 3</div><div class="v">${d.ej3.ok} de ${d.ej3.tot}</div><div class="d">el agua del mate</div></div>`;
+}
+function latin(s){ return String(s).replace(/✓/g,'•').replace(/→/g,'>').replace(/′/g,"'").replace(/−/g,'-').replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu,'').replace(/[^\x00-\xFF]/g,'?'); }
+function estadoItem(it){
+  if (it.tipo==='mcq'){ if (ST.q[it.id]===undefined) return 'sin responder'; return ST.q[it.id]===it.correct ? 'correcto' : 'incorrecto'; }
+  const s = ST.num[it.id]; if (!s || !s.intentos) return 'sin responder'; return s.ok ? `correcto (${s.intentos} int.)` : `sin resolver (${s.intentos} int.)`;
+}
+function descargarPdf(){
+  ST.nombre = $('#repNombre').value.trim(); ST.curso = $('#repCurso').value.trim(); ST.meta = $('#metaTxt').value; guardar();
+  const av = $('#pdfAviso');
+  if (!ST.nombre){ av.textContent = 'Escribí tu nombre antes de descargar.'; return; }
+  const J = window.jspdf && window.jspdf.jsPDF;
+  if (!J){ av.textContent = 'No se pudo cargar el generador de PDF (sin conexión). Se abre el diálogo de impresión: elegí "Guardar como PDF".'; setTimeout(() => window.print(), 300); return; }
+  av.textContent = '';
+  const d = datosReporte();
+  const doc = new J({unit:'mm', format:'a4'});
+  const M = 18, W = 210 - 2*M; let y = 20;
+  const line = (txt, size, style, color) => { doc.setFontSize(size||11); doc.setFont('helvetica', style||'normal'); if (color) doc.setTextColor(...color); else doc.setTextColor(32,32,28); const ls = doc.splitTextToSize(latin(txt), W); ls.forEach(l => { if (y > 280){ doc.addPage(); y = 20; } doc.text(l, M, y); y += (size||11)*0.5; }); y += 1.5; };
+  doc.setFillColor(15,34,68); doc.rect(0,0,210,26,'F');
+  doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(15); doc.text('Ecuaciones diferenciales · Ley de enfriamiento de Newton', M, 12);
+  doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.text('Escuela Philips · Matemática · 5.º año · laboratoriobest-IA', M, 19);
+  y = 36;
+  line(`${ST.nombre}${ST.curso ? ' - ' + ST.curso : ''}`, 13, 'bold');
+  line(`Fecha: ${new Date().toLocaleDateString('es-AR')}`, 10, 'normal', [95,91,83]);
+  y += 3;
+  line('El problema del apunte (100 °C, ambiente 30 °C, 80 °C a los 10 min)', 12, 'bold', [43,90,147]);
+  line(`La ley: traducción ${d.trad} de 3 · signo de K: ${estadoItem(byId('q_signo'))}`);
+  line(`Plantear: ${d.plan.ok} de ${d.plan.tot} · Resolver (pasos anticipados): ${d.res.ok} de ${d.res.tot}`);
+  line(`Las constantes: A ${estadoItem(byId('n_A'))} · K exacto ${estadoItem(byId('q_Kex'))} · K numerico ${estadoItem(byId('n_K'))} · T(20) ${estadoItem(byId('q_pred'))}`);
+  line(`Laboratorio: ultimo K tanteado = ${fmt(ST.lab.K,4)} por minuto`);
+  y += 3;
+  line('Practica', 12, 'bold', [110,78,170]);
+  EJ.forEach((e,i) => { const c = cuenta(e.id); line(`Problema ${i+2} · ${e.titulo}: ${c.ok} de ${c.tot}`, 11, 'bold'); e.items.forEach(it => line(`   ${it.tt} - ${estadoItem(it)}${ST.pistas[it.id] ? ' - ' + ST.pistas[it.id] + ' pistas' : ''}`, 9.5)); });
+  line(`${d.pistasN} pistas pedidas en total - ${d.intentosN} intentos en las respuestas numericas`, 10, 'normal', [95,91,83]);
+  y += 3;
+  line('Cierre', 12, 'bold', [199,122,64]);
+  line(ST.meta && ST.meta.trim() ? `Que entendi hoy: ${ST.meta.trim()}` : 'Sin respuesta de cierre.', 10, ST.meta ? 'normal' : 'italic', ST.meta ? null : [95,91,83]);
+  doc.setFontSize(8); doc.setTextColor(120,120,120); doc.text('"La matematica no exige genios, exige constancia." · laboratoriobest-IA', M, 292);
+  const nombreArch = 'ED-Newton-' + ST.nombre.replace(/\s+/g,'-').replace(/[^\w\-]/g,'') + '.pdf';
+  doc.save(nombreArch);
+  av.textContent = 'PDF generado: ' + nombreArch;
+}
+
+/* ===================== RESTAURAR ===================== */
+function restaurar(){
+  Object.entries(ST.trad).forEach(([row,c]) => { delete ST.trad[row]; elegirTrad(+row, c, true); });
+  Object.entries(ST.q).forEach(([id,j]) => { const box = $(`.act[data-q="${id}"]`); if (box){ delete ST.q[id]; responderQ(box, j, true); } });
+  ALL.forEach(it => {
+    const box = $(`.act[data-q="${it.id}"], .act[data-n="${it.id}"]`); if (!box) return;
+    for (let i=0; i<(ST.pistas[it.id]||0); i++) pista(box, true);
+    if (it.tipo==='num' && ST.num[it.id] && ST.num[it.id].intentos){
+      const s = ST.num[it.id]; const inp = $('[data-in]', box); inp.value = s.val||'';
+      if (s.ok){ const n = s.intentos; s.ok = false; s.intentos = n-1; comprobarNum(box, true); }
+      else { habilitarSol(box); inp.classList.add('wrong'); setEstado(box, `revisar (${s.intentos} ${s.intentos===1?'intento':'intentos'})`, 'var(--rust)'); }
+    }
+  });
+  $('#slK').value = ST.lab.K;
+  ir(ST.stage||0, true);
+}
+
+/* ===================== EVENTOS ===================== */
+document.addEventListener('click', e => {
+  const go = e.target.closest('[data-go]'); if (go){ ir(go.dataset.go); return; }
+  const pasoBtn = e.target.closest('.paso > button');
+  if (pasoBtn){ const p = pasoBtn.parentElement; p.classList.toggle('open'); if (p.classList.contains('open')){ tex(p); if (p.getBoundingClientRect().top < 100) p.scrollIntoView({block:'start'}); } return; }
+  const chip = e.target.closest('.trad-row .chip'); if (chip && !chip.disabled){ elegirTrad(+chip.closest('.trad-row').dataset.row, +chip.dataset.c); return; }
+  const opt = e.target.closest('.opt');
+  if (opt && !opt.disabled){ const box = opt.closest('.act[data-q]'); if (box){ responderQ(box, +opt.dataset.j); return; } }
+  const box = e.target.closest('.act');
+  if (box){
+    if (e.target.closest('[data-check]')){ comprobarNum(box); return; }
+    if (e.target.closest('[data-pista]')){ pista(box); return; }
+    const sb = e.target.closest('[data-sol]');
+    if (sb && !sb.disabled){ const s = $('[data-solucion]', box); const vis = s.style.display!=='none'; s.style.display = vis ? 'none' : ''; sb.textContent = vis ? 'Ver resolución' : 'Ocultar resolución'; if (!vis) tex(s); return; }
+  }
+  if (e.target.closest('#btnPdf')){ descargarPdf(); return; }
+  if (e.target.closest('#fab')){ abrirModal('modalForm'); return; }
+  if (e.target.closest('#btnReset')){ abrirModal('modalReset'); return; }
+  if (e.target.closest('#doReset')){ try { localStorage.removeItem(STORE_KEY); } catch(_){} location.reload(); return; }
+  if (e.target.closest('[data-cerrar]')){ cerrarModales(); return; }
+  if (e.target.classList.contains('modal-bg')){ cerrarModales(); return; }
+});
+document.addEventListener('keydown', e => {
+  if (e.key==='Enter' && e.target.matches && e.target.matches('input.num[data-in]')){ const box = e.target.closest('.act'); if (box) comprobarNum(box); return; }
+  if (e.key==='Escape'){ cerrarModales(); return; }
+  if ((e.key==='t' || e.key==='T') && !e.ctrlKey && !e.metaKey && !e.altKey && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)){ const m = $('#modalForm'); if (m.classList.contains('show')) cerrarModales(); else abrirModal('modalForm'); }
+});
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (t.tagName==='TEXTAREA'){ t.style.height = 'auto'; t.style.height = (t.scrollHeight + 2) + 'px'; }
+  if (t.id==='slK'){ ST.lab.K = +t.value; drawLab(); guardar(); }
+  if (t.id==='metaTxt'){ ST.meta = t.value; guardar(); }
+  if (t.id==='repNombre'){ ST.nombre = t.value; guardar(); }
+  if (t.id==='repCurso'){ ST.curso = t.value; guardar(); }
+});
+function abrirModal(id){ cerrarModales(); const m = $('#'+id); m.classList.add('show'); tex(m); }
+function cerrarModales(){ $$('.modal-bg').forEach(m => m.classList.remove('show')); }
+
+/* ===================== RESPALDO SIN KATEX ===================== */
+const SYM = {infty:'∞', to:'→', le:'≤', ge:'≥', ne:'≠', neq:'≠', Rightarrow:'⇒', in:'∈', pm:'±', cdot:'·', cdots:'⋯', ldots:'…', pi:'π', approx:'≈', times:'×', Omega:'Ω', tau:'τ', quad:' ', qquad:'  ', ',':' ', ';':' ', '!':'', ' ':' ', displaystyle:'', limits:'', mathop:'', left:'', right:'', int:'∫', prime:'′', ln:'ln'};
+function mfTok(s){
+  const t = []; let i = 0;
+  while (i < s.length){
+    const ch = s[i];
+    if (ch === '\\'){
+      let j = i+1;
+      if (/[a-zA-Z]/.test(s[j]||'')){ while (j < s.length && /[a-zA-Z]/.test(s[j])) j++; t.push({c: s.slice(i+1, j)}); i = j; }
+      else { t.push({c: s[j]||''}); i = j+1; }
+    } else if (ch === '{'){
+      let d = 1, j = i+1; while (j < s.length && d > 0){ if (s[j]==='{') d++; else if (s[j]==='}') d--; j++; }
+      t.push({g: s.slice(i+1, j-1)}); i = j;
+    } else { t.push({ch}); i++; }
+  }
+  return t;
+}
+function mfArg(t, k){ const x = t[k]; if (!x) return ['', k]; if (x.g!==undefined) return [mfRender(x.g), k+1]; if (x.c!==undefined) return [mfRender('\\'+x.c), k+1]; return [mfRender(x.ch), k+1]; }
+function mfScripts(t, k){ let sup = '', sub = ''; for (let q=0; q<2; q++){ if (t[k] && t[k].ch === '^'){ [sup, k] = mfArg(t, k+1); } else if (t[k] && t[k].ch === '_'){ [sub, k] = mfArg(t, k+1); } } return [sup, sub, k]; }
+function mfRender(src){
+  const t = mfTok(src); let out = ''; let k = 0;
+  while (k < t.length){
+    const x = t[k];
+    if (x.g!==undefined){ out += mfRender(x.g); k++; continue; }
+    if (x.ch!==undefined){
+      const ch = x.ch;
+      if (ch==='^' || ch==='_'){ const [a, k2] = mfArg(t, k+1); out += ch==='^' ? `<sup>${a}</sup>` : `<sub>${a}</sub>`; k = k2; continue; }
+      if (ch==='-') out += '−'; else if (/[a-zA-Z]/.test(ch)) out += `<span class="v">${ch}</span>`; else if (ch==='*') out += '·'; else if (ch==="'") out += '′'; else out += ch;
+      k++; continue;
+    }
+    const c = x.c; k++;
+    if (c==='dfrac' || c==='frac' || c==='tfrac'){ let a, b; [a, k] = mfArg(t, k); [b, k] = mfArg(t, k); out += `<span class="frac"><span>${a}</span><span>${b}</span></span>`; continue; }
+    if (c==='sqrt'){ let a; [a, k] = mfArg(t, k); out += `√<span style="border-top:1px solid currentColor">${a}</span>`; continue; }
+    if (c==='int'){ const [sup, sub, k2] = mfScripts(t, k); k = k2; out += `<span class="big">∫</span>${sub?`<sub>${sub}</sub>`:''}${sup?`<sup>${sup}</sup>`:''}`; continue; }
+    if (c==='text' || c==='mathrm' || c==='operatorname'){ const g = t[k]; k++; out += g && g.g!==undefined ? g.g : ''; continue; }
+    if (c==='left' || c==='right'){ if (t[k] && t[k].ch!==undefined){ out += t[k].ch==='.' ? '' : t[k].ch; k++; } else if (t[k] && t[k].c){ out += SYM[t[k].c] || ''; k++; } continue; }
+    if (SYM[c]!==undefined){ out += SYM[c]; continue; }
+    out += c;
+  }
+  return out;
+}
+function mfallRender(root){
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n => (n.parentElement.closest('script,style,.mfall,textarea') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) });
+  const nodes = []; let n; while ((n = walker.nextNode())) if (/\\[\(\[]/.test(n.nodeValue)) nodes.push(n);
+  nodes.forEach(node => {
+    const html = node.nodeValue.replace(/\\\[([\s\S]*?)\\\]/g, (_, s) => `<span class="mfall disp">${mfRender(s)}</span>`).replace(/\\\(([\s\S]*?)\\\)/g, (_, s) => `<span class="mfall">${mfRender(s)}</span>`);
+    const span = document.createElement('span'); span.innerHTML = html;
+    node.parentNode.replaceChild(span, node);
+  });
+}
+
+/* ===================== AUTOTEST (?test) ===================== */
+function correrTests(){
+  const T = []; const ok = (nombre, cond, det) => T.push({nombre, ok: !!cond, det});
+  const mcqs = ALL.filter(i => i.tipo==='mcq'), nums = ALL.filter(i => i.tipo==='num');
+  ok('ítems: ids únicos', new Set(ALL.map(i=>i.id)).size===ALL.length, ALL.length + ' ítems');
+  ok('mcq: 4 opciones y 4 fb cada una', mcqs.every(q => q.opts.length===4 && q.fb.length===4 && q.correct>=0 && q.correct<4), mcqs.length + ' mcq');
+  const pos = [0,1,2,3].map(k => mcqs.filter(q=>q.correct===k).length);
+  ok('mcq: la correcta varía de posición (cada una ≥ 3)', pos.every(p => p>=3), pos.join('/'));
+  ok('num: 6 numéricos con pistas, sol y tolerancia', nums.length===6 && nums.every(n => n.pistas.length>=2 && n.sol && n.tol>0));
+  ok('práctica: 2 problemas × 5 ítems', EJ.length===2 && EJ.every(e => e.items.length===5));
+  ok('traductor: 3 filas, fb de error en las no correctas', TRAD.length===3 && TRAD.every(t => [0,1,2].every(k => k===t.correct || t.no[k].length>0)));
+  ok('P1: A = 70, 5/7, K = −0,033647', 100-30===70 && Math.abs(50/70 - 5/7) < 1e-12 && Math.abs(Math.log(5/7)/10 + 0.033647) < 1e-5);
+  ok('P1: T(10) = 80 y T(20) = 65,71', Math.abs(30 + 70*Math.exp(Math.log(5/7)) - 80) < 1e-9 && Math.abs(30 + 70*25/49 - 65.714) < 0.001);
+  ok('P2: A = 180, 2/3, K = −0,081093, T(10) = 100', 200-20===180 && Math.abs(120/180 - 2/3) < 1e-12 && Math.abs(Math.log(2/3)/5 + 0.081093) < 1e-5 && Math.abs(20 + 180*4/9 - 100) < 1e-9);
+  ok('P3: A = 60, 1/2, K = −0,046210, T(30) = 40', 85-25===60 && 30/60===0.5 && Math.abs(-Math.log(2)/15 + 0.046210) < 1e-5 && Math.abs(25 + 60/4 - 40) < 1e-9);
+  ok('num: respuestas de referencia coinciden', Math.abs(byId('n_A').resp-70)<1e-9 && Math.abs(byId('n_K').resp - Math.log(5/7)/10) < 2e-5 && Math.abs(byId('e2b').resp-180)<1e-9 && Math.abs(byId('e2d').resp - Math.log(2/3)/5) < 2e-5 && Math.abs(byId('e3b').resp-60)<1e-9 && Math.abs(byId('e3d').resp + Math.log(2)/15) < 2e-5);
+  ok('parseNum: coma y menos Unicode', parseNum('−0,0336')===-0.0336 && parseNum('-0.0336')===-0.0336 && parseNum('70')===70 && isNaN(parseNum('abc')));
+  ok('lab: K exacto da T(10) = 80 (dentro de la tolerancia del tanteo)', Math.abs(30 + 70*Math.exp(-0.0335*10) - 80) < 0.35);
+  ok('DOM: 7 secciones, 7 píldoras', $$('main > section').length===7 && $$('.pill').length===7);
+  ok('compuertas: 3 recuadros cerrados al inicio sin estado', $$('.gated-box').length===3 && (Object.keys(ST.q).length ? true : $$('.gated-box.open').length===0));
+  ok('DOM: todos los ítems renderizados', ALL.every(i => $(`.act[data-q="${i.id}"], .act[data-n="${i.id}"]`)));
+  ok('sin .katex-error', $$('.katex-error').length===0);
+  ok('chrome: nombre del profesor 2 veces, en .lab-sub', $$('.lab-sub').length===2 && $$('.lab-sub').every(e => /Ariel L\. Cardozo Delgado/.test(e.textContent)));
+  ok('sin metalenguaje visible', !/andamiaje|resolución guiada|scaffold|zona de desarrollo|constructiv/i.test(document.body.innerText));
+  window.__TESTS__ = T;
+  const panel = document.createElement('div'); panel.id = 'testPanel';
+  const nOk = T.filter(t=>t.ok).length;
+  panel.innerHTML = `<div><b>Autotest: ${nOk} / ${T.length}</b></div>` + T.map(t => `<div class="${t.ok?'ok':'fail'}">${t.ok?'✓':'✗'} ${t.nombre}${t.det?' · '+t.det:''}</div>`).join('');
+  document.body.appendChild(panel);
+}
+
+/* ===================== ARRANQUE ===================== */
+function start(){
+  if (!window.renderMathInElement){ window.__katexFailed = true; window.renderMathInElement = mfallRender; }
+  cargar();
+  renderPills(); renderItems();
+  tex(document.body);
+  restaurar();
+  actualizarGates();
+  drawLab();
+  if (/[?&]test\b/.test(location.search)) correrTests();
+}
+if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', () => setTimeout(start, 0)); else setTimeout(start, 0);
+})();
+</script>
+</body>
+</html>
